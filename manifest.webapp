@@ -1,0 +1,25 @@
+{
+  "name": "Music Online",
+  "description": "Music Online",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "permissions": {
+    "themeable":{}
+  },
+  "theme_color": "#d1247c",
+  "locales": {
+    "en-US": {
+      "name": "Music Online",
+      "description": "Music Online"
+    }
+  },
+  "chrome":{
+    "statusbar": "overlap"
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "56": "/assets/music_56.png",
+    "112": "/assets/music_112.png"
+  },
+  "orientation": "default"
+}
