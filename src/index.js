@@ -1,24 +1,15 @@
-// JSX + preact
-import { h, render, Component } from 'preact';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-class App extends Component {
-  render() {
-    return <h1>Hello, world!</h1>;
-  }
-}
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './app'
 
-render(<App />, document.body);
+const rootElement = document.getElementById('root');
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
+);
 
-
-// htm + preact
-// import { h, Component, render } from 'preact';
-// import htm from 'htm';
-//
-// // Initialize htm with Preact
-// const html = htm.bind(h);
-//
-// function App (props) {
-//   return html`<h1>Hello ${props.name}!</h1>`;
-// }
-//
-// render(html`<${App} name="World" />`, document.body);
