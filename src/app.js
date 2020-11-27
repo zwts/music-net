@@ -4,7 +4,7 @@ import { Component } from "react";
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import Player from './components/player';
+import Player from './pages/player';
 
 import './app.scss';
 
