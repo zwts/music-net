@@ -11,11 +11,15 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "babel-loader": "^8.2.1",
+    "css-loader": "1.0.0",
     "fatigue-scripts": "git+ssh://git@git.kaiostech.com:shared/fatigue-scripts.git",
+    "mini-css-extract-plugin": "0.4.2",
+    "sass-loader": "7.1.0",
     "webpack": "4.17.1",
     "webpack-cli": "3.1.0"
   },
   "dependencies": {
+    "node-sass": "4.9.3",
     "preact": "^10.5.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

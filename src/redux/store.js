@@ -1,4 +1,4 @@
 import { createStore } from "redux";
-import rootReducer from "./reducers";
+import playerReducer from "./reducers/playerReducer";
 
-export default createStore(rootReducer);
+export default createStore(playerReducer);
