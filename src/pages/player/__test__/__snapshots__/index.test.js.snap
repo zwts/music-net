@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Player /> renders correctly 1`] = `
+<div
+  className="player"
+  id="player-container"
+>
+  <span
+    a={true}
+    className="p-pri"
+  >
+    list
+  </span>
+  <span
+    className="p-sec"
+  >
+    play
+  </span>
+</div>
+`;

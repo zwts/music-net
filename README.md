@@ -7,6 +7,33 @@
 5. Make install `APP=music-net make install-gaia` any time when code updated.
 
 
+### Configurations
+
+#### package.json
+- @babel/core @babel/preset-env @babel/preset-react
+
+#### webpack.config.prod.js
+
+#### jest.config.js
+
+#### .kaios
+#### .babelrc
+
+
+
 ### Test
-todo
+#### Jest
+- jest test react connect component [DOC](https://www.robinwieruch.de/react-connected-component-test)
+- not sure this libs is useful
+
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
+
+- "react-test-renderer"
+
+- "redux-mock-store": use for mock redux store
+
+- fileMock and styleMock not sure useful
+
 

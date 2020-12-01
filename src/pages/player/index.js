@@ -20,8 +20,6 @@ class Player extends Component {
         case 'Enter':
           this.props.onPlayClick();
           break;
-        case 'SoftLeft':
-          break;
         default:
           break;
       }
