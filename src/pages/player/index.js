@@ -8,29 +8,39 @@ import "./index.scss";
 class Player extends Component {
   constructor(props) {
     super(props);
+
+    // not use bind?
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this);
+    this.focus();
   }
 
-  handleEvent(e) {
-    if (e.type === 'keydown') {
-      switch (e.key) {
-        case 'Enter':
-          this.props.onPlayClick();
-          break;
-        default:
-          break;
-      }
+  focus() {
+    this.element.focus();
+  }
+
+  handleKeyDown(e) {
+    switch (e.key) {
+      case 'Enter':
+        this.props.onPlayClick();
+        break;
+      case 'Backspace':
+        this.props.history.push('/');
+        e.preventDefault();
+        e.stopPropagation();
+        break;
+      default:
+        break;
     }
   }
 
   render() {
     const { mode, played } = this.props;
     return (
-      <div id="player-container" className="player">
-        <span className="p-pri" a>{mode}</span>
+      <div ref={ref => {this.element = ref}} onKeyDown={this.handleKeyDown} className="player" tabIndex="-1">
+        <span className="p-pri">{mode}</span>
         <span className="p-sec">{ played ? 'play' : 'stop' }</span>
       </div>
     )
