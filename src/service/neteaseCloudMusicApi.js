@@ -21,7 +21,7 @@ export function getSearchResult(keywords) {
  */
 export function getSongUrl(songId) {
   const API = '/song/url';
-  const url = `${HOST} + ${API} + '?id= ' + ${songId}`;
+  const url = HOST + API + '?id= ' + songId;
 
   return axios.get(url);
 }
