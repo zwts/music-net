@@ -1,0 +1,13 @@
+.kai-empty {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  height: calc(100% - var(--softkeybar-height) - var(--header-height));
+
+  &-text {
+    color: var(--color-gs90);
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+}

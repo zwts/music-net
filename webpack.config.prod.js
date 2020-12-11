@@ -37,6 +37,19 @@ module.exports = {
           'css-loader',
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 4096,
+              fallback: 'file-loader',
+              name: '[sha512:hash:base64:7].[ext]'
+            }
+          }
+        ]
       }
     ],
   },
