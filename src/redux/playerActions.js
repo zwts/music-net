@@ -29,11 +29,11 @@ export const fetchSongUrlFailure = error => ({
 
 export const playNextSong = () => ({
   type: PLAY_NEXT_SONG,
-})
+});
 
 export const playPreviousSong = () => ({
   type: PLAY_PREVIOUS_SONG,
-})
+});
 
 export const changePlayerMode = playMode => ({
   type: CHANGE_PLAYER_MODE,

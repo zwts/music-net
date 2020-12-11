@@ -14,21 +14,29 @@ class Player extends Component {
   }
 
   componentDidMount() {
+    this.getCurrentSong();
+
     this.focus();
   }
 
   focus() {
-    this.element.focus();
+    if (this.element) {
+      this.element.focus();
+    }
   }
 
   play() {
     this.audio = document.getElementById('player-audio');
-    this.audio.play();
+    if (this.audio) {
+      this.audio.play();
+    }
   }
 
   pause() {
     this.audio = document.getElementById('player-audio');
-    this.audio.pause();
+    if (this.audio) {
+      this.audio.pause();
+    }
   }
 
   next() {
@@ -51,15 +59,22 @@ class Player extends Component {
 
   }
 
+  getCurrentSong(id) {
+    // id need get from xxx list
+    this.id = 33894312;
+    this.props.fetchSongUrl(this.id);
+  }
+
+  togglePlay() {
+    this.props.played ? this.pause():this.play();
+    this.props.togglePlayer();
+  }
+
   handleKeyDown(e) {
     if (e.type === 'keydown') {
       switch (e.key) {
         case 'Enter':
-          this.props.togglePlayer();
-          // id need get from xxx list
-          this.id = 33894312;
-          this.props.fetchSongUrl(this.id);
-          this.props.played ? this.pause():this.play();
+          this.togglePlay();
           break;
         case 'SoftLeft':
           this.previous();
@@ -71,6 +86,7 @@ class Player extends Component {
           this.props.history.go(-1);
           e.preventDefault();
           e.stopPropagation();
+          break;
         default:
           break;
       }

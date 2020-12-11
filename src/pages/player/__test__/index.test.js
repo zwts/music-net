@@ -1,16 +1,18 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import { togglePlayer } from '../../../redux/actions'
+import { togglePlayer, fetchSongUrl } from '../../../redux/playerActions';
+import thunk from 'redux-thunk';
 
 import Player from '../index';
 
-const mockStore = configureStore([]);
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
 
 describe('<Player />', () => {
   let store;
-  let component;
 
   beforeEach(() => {
     store = mockStore({
@@ -18,28 +20,35 @@ describe('<Player />', () => {
       loopMode: 'list'
     });
 
-    store.dispatch = jest.fn();
+    store.clearActions();
+  });
 
-    component = renderer.create(
+  it('renders correctly', () => {
+    let snapshotComponent = renderer.create(
       <Provider store={store}>
         <Player />
       </Provider>
     );
+
+    expect(snapshotComponent).toMatchSnapshot();
   });
 
-  it('renders correctly', () => {
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+  it('should dispatch an "togglePlayer" action when Enter key pressed', () => {
+    let component;
 
-  it('should dispatch an action on enter key click', () => {
-    let event = new CustomEvent ('keydown', {
-      bubbles: true, cancelable: false
-    });
-    event.key = 'Enter';
+    component = mount(
+      <Provider store={store}>
+        <Player />
+      </Provider>
+    );
 
-    document.dispatchEvent(event);
+    let fetchSongURLAction = {type: 'FETCH_SONGURL_BEGIN'};
+    // will fetch song when Player mount
+    expect(store.getActions()[0]).toEqual(fetchSongURLAction);
 
-    expect(store.dispatch).toHaveBeenCalledTimes(1);
-    expect(store.dispatch).toHaveBeenCalledWith(togglePlayer);
+    component.find('.player').simulate('keydown', {key: 'Enter'});
+
+    // be careful about getActions return.
+    expect(store.getActions()[1]).toEqual(togglePlayer());
   });
 });

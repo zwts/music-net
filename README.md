@@ -6,37 +6,122 @@
 4. Push Application into device first time(? -> shi.tan)
 5. Make install `APP=music-net make install-gaia` any time when code updated.
 
-
-### Configurations
-
-#### package.json
-- @babel/core @babel/preset-env @babel/preset-react
-
-#### webpack.config.prod.js
-
-#### jest.config.js
-
-#### .kaios
-#### .babelrc
-
-
-
 ### Test
+#### Test Samples
+- Test SnapShot
+```javascript
+  it('renders correctly', () => {
+    let snapshotComponent = renderer.create(
+      <Provider store={store}>
+        <Player />
+      </Provider>
+    );
+
+    expect(snapshotComponent).toMatchSnapshot();
+  });
+```
+
+- Simulate `Keydown` event
+  ```javascript
+  component.find('.player').simulate('keydown', {key: 'Enter'});
+  ```
+
+- Test Redux actions [ref](https://www.digitalocean.com/community/tutorials/react-testing-redux-actions)
+  ```javascript
+    it('should dispatch an "togglePlayer" action when Enter key pressed', () => {
+      let component;
+
+      component = mount(
+        <Provider store={store}>
+          <Player />
+        </Provider>
+      );
+
+      let fetchSongURLAction = {type: 'FETCH_SONGURL_BEGIN'};
+      // will fetch song when Player mount
+      expect(store.getActions()[0]).toEqual(fetchSongURLAction);
+
+      component.find('.player').simulate('keydown', {key: 'Enter'});
+
+      // be careful about getActions return.
+      expect(store.getActions()[1]).toEqual(togglePlayer());
+    });
+  ```
+
+
 #### Jest
 - jest test react connect component [DOC](https://www.robinwieruch.de/react-connected-component-test)
 
-- not sure this libs is useful
+- `fileMock` and `styleMock`
 
+- setup file, will run before every test to build environment like set `enzyme adapter`.
+  ```javascript
+  import Enzyme from 'enzyme';
+  import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+  Enzyme.configure({ adapter: new Adapter() });
+  ```
+
+#### enzyme
+- config
+  ```json
+  {
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2"
+  }
+  ```
+- enzyme-adapter-react-17
+[ref](https://github.com/enzymejs/enzyme/issues/2429#issuecomment-679265564)
 
-- "react-test-renderer"
 
-- "redux-mock-store": use for mock redux store
+- [shallow](https://enzymejs.github.io/enzyme/docs/api/shallow.html), [mount](https://enzymejs.github.io/enzyme/docs/api/mount.html), [render](https://enzymejs.github.io/enzyme/docs/api/render.html)
+  - mount, use mount can simulate event like this:
+  ```javascript
+      component = mount(
+        <Provider store={store}>
+          <Player />
+        </Provider>
+      );
 
-- fileMock and styleMock not sure useful
+      component.find('.player').simulate('keydown', {key: 'Enter'});
+  ```
+#### redux-mock-store
+- config
+  ```json
+  {
+    "redux-mock-store": "^1.5.4"
+  }
+  ```
 
+[API DOC](https://github.com/reduxjs/redux-mock-store#api)
+- getActions [v]
+  ```javascript
+  // be careful about getActions return.
+  expect(store.getActions()[0]).toEqual(togglePlayer());
+  ```
+- getState
+- dispatch
+- clearActions [v]
+  ```javascript
+  beforeEach(() => {
+    store = mockStore({
+      playedState: 'stop',
+      loopMode: 'list'
+    });
+
+    component = mount(
+      <Provider store={store}>
+        <Player />
+      </Provider>
+    );
+
+    // before each test item we clean already received actions
+    store.clearActions();
+  });
+  ```
+- subscribe
+- replaceReducer
 
 
 ### ROUTER

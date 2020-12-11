@@ -3,10 +3,10 @@
 exports[`<Player /> renders correctly 1`] = `
 <div
   className="player"
-  id="player-container"
+  onKeyDown={[Function]}
+  tabIndex="-1"
 >
   <span
-    a={true}
     className="p-pri"
   >
     list
@@ -16,5 +16,9 @@ exports[`<Player /> renders correctly 1`] = `
   >
     play
   </span>
+  <audio
+    controls={true}
+    id="player-audio"
+  />
 </div>
 `;
