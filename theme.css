@@ -399,3 +399,7 @@ ul, .ul {
   font-size: 2.2rem;
 }
 
+li:focus {
+  background-color: var(--highlight-color);
+  color: var(--color-gs00);
+}

@@ -24,6 +24,9 @@ export default class Home extends Component {
       case 'Enter':
         this.props.history.push('/player');
         break;
+      case 'ArrowDown':
+        this.props.history.push('/playlist');
+        break;
       default:
         break;
     }
@@ -33,6 +36,7 @@ export default class Home extends Component {
     return (
       <div ref={ref => {this.element = ref}} onKeyDown={this.handleKeyDown} className="home" tabIndex="-1">
         <span>Press Enter key into Player Screen</span>
+        <span>Press ArrowDown key into Playlist Screen</span>
       </div>
     )
   }

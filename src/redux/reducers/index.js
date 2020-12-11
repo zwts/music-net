@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
 import playerReducer from "./playerReducer";
+import playlistReducer from "./playlistReducer";
 
-export default combineReducers({
-  playerReducer
+const rootReducer = combineReducers({
+  playerReducer,
+  playlistReducer
 });
+
+export default rootReducer;

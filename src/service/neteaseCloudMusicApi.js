@@ -6,10 +6,9 @@ const HOST = "http://172.31.28.31:3000";
  *
  * @param keywords  Search keywords, it could be singer, songname etc...
  */
-export function getSearchResult(keywords) {
+export function getSearchResult(keywords, limit) {
   const API = '/cloudsearch';
-  const url = HOST + API + '?keywords= ' + keywords;
-
+  const url = HOST + API + '?keywords= ' + keywords + '&limit=' + limit;
   return axios.get(url);
 }
 

@@ -22,6 +22,11 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         options: {
+          presets: ['@babel/preset-react', '@babel/preset-env'],
+          plugins: [
+            '@babel/plugin-proposal-function-bind',
+            '@babel/plugin-proposal-class-properties'
+          ],
           cacheDirectory: true
         }
       },

@@ -1,0 +1,7 @@
+.list-view {
+  position: relative;
+  top: var(--statusbar-height);
+  width: 100%;
+  height: calc(100% - var(--header-height) - var(--softkeybar-height));
+  overflow: scroll;
+}

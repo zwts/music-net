@@ -68,7 +68,7 @@ class Player extends Component {
           this.next();
           break;
         case 'Backspace':
-          this.props.history.push('/');
+          this.props.history.go(-1);
           e.preventDefault();
           e.stopPropagation();
         default:
