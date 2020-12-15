@@ -30,7 +30,7 @@ export function getSongUrl(songId) {
  *
  * @param limit  The number of playlists taken out, default is 30.
  */
-export function getRecommendPlayList(limit) {
+export function getRecommendPlaylist(limit) {
   const API = '/personalized';
   const url = HOST + API + '?limit=' + limit;
 

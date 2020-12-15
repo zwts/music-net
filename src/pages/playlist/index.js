@@ -11,7 +11,8 @@ class Playlist extends Component {
   constructor(props) {
     super(props);
     if (!store.getState().itemsData) {
-      this.props.fetchPlaylist('邓紫棋', 2);
+      dump(`> fetchPlaylist()`);
+      this.props.fetchPlaylist(2);
     }
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
@@ -54,11 +55,12 @@ class Playlist extends Component {
     dump(`itemsData: ${JSON.stringify(itemsData)}`);
 
     function createListItem(itemsData) {
-      const { icon, name, ar } = itemsData;
+      const { picUrl, name, playCount, id } = itemsData;
       const options = {};
-      options.icon = icon;
+      // options.icon = picUrl;
       options.primary = name;
-      options.secondary = ar;
+      options.secondary = playCount;
+      options.id = id;
       options.focusable = 'true';
 
       return (

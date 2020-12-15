@@ -1,19 +1,16 @@
 import {
-  FETCHING_PLAYLIST,
-  FETCH_PLAYLIST_SUCCESS,
-  FETCH_PLAYLIST_FAILURE
+  REQUEST_PLAYLIST,
+  RECEIVE_PLAYLIST,
 } from "../actionTypes";
 
 
 export default function playlistReducer(state = {}, action) {
   switch (action.type) {
-    case FETCHING_PLAYLIST:
+    case REQUEST_PLAYLIST:
       return {};
-    case FETCH_PLAYLIST_SUCCESS:
+    case RECEIVE_PLAYLIST:
       dump(`playlistReducer() success: ${JSON.stringify(action.data)}`);
       return { itemsData: action.data };
-    case FETCH_PLAYLIST_FAILURE:
-      return {};
     default:
       return {};
   }
