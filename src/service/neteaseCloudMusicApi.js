@@ -45,7 +45,7 @@ export function getRecommendPlaylist(limit) {
  */
 
 export function getFeaturedPlayList(limit, order) {
-  const API = '/top/playlist'
+  const API = '/top/playlist';
   const url = HOST + API + '?limit=' + limit + '&order=' + order;
 
   return axios.get(url);

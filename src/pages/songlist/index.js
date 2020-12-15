@@ -1,18 +1,17 @@
-import React from "react";
-import { Component } from "react";
-import { connect } from "react-redux";
-import { fetchPlaylist } from "../../redux/playlistActions";
+import React from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchSongList } from '../../redux/songlistActions';
 import { List, ListItem } from 'kaid';
 import store from '../../redux/store';
 
-import "./index.scss";
+import './index.scss';
 
-class Playlist extends Component {
+class SongList extends Component {
   constructor(props) {
     super(props);
-    if (!store.getState().itemsData) {
-      dump(`> fetchPlaylist()`);
-      this.props.fetchPlaylist(2);
+    if (!store.getState().songsData) {
+      this.props.fetchSongList('邓紫棋', 2);
     }
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.onFocus = this.onFocus.bind(this);
@@ -20,7 +19,6 @@ class Playlist extends Component {
 
   componentDidMount() {
     dump(`componentDidMount`);
-    // this.focus();
   }
 
   componentDidUpdate() {
@@ -47,15 +45,15 @@ class Playlist extends Component {
   }
 
   render() {
-    const { itemsData } = this.props;
-    dump(`itemsData: ${JSON.stringify(itemsData)}`);
+    const { songsData } = this.props;
+    dump(`songsData: ${JSON.stringify(songsData)}`);
 
-    function createListItem(itemsData) {
-      const { picUrl, name, playCount, id } = itemsData;
+    function createListItem(songsData) {
+      const { icon, name, ar, id } = songsData;
       const options = {};
-      // options.icon = picUrl;
+      options.icon = icon;
       options.primary = name;
-      options.secondary = playCount;
+      options.secondary = ar;
       options.id = id;
       options.focusable = 'true';
 
@@ -65,18 +63,17 @@ class Playlist extends Component {
     }
 
     return (
-      <div
-        ref={ref => {this.element = ref;}}
-        onKeyDown={this.handleKeyDown}
-        onFocus={this.onFocus}
-        className="list-view"
-        tabIndex="-1">
+      <div ref={ref => {this.element = ref;}}
+           onKeyDown={this.handleKeyDown}
+           className="list-view"
+           onFocus={this.onFocus}
+           tabIndex="-1">
         <List ref={(list) => {
           this.list = list;
         }}
         >
-          {itemsData && itemsData.map(itemData => (
-            createListItem(itemData)
+          {songsData && songsData.map(songData => (
+            createListItem(songData)
           ))}
         </List>
       </div>
@@ -87,14 +84,14 @@ class Playlist extends Component {
 
 const mapStateToProps = state => {
   return {
-    itemsData: state.itemsData,
+    songsData: state.songsData,
   };
 };
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
-  fetchPlaylist
+  fetchSongList
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
+export default connect(mapStateToProps, mapDispatchToProps)(SongList);
 

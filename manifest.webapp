@@ -13,9 +13,6 @@
       "description": "Music Online"
     }
   },
-  "chrome":{
-    "statusbar": "overlap"
-  },
   "default_locale": "en-US",
   "icons": {
     "56": "/assets/music_56.png",

@@ -87,41 +87,42 @@
       component.find('.player').simulate('keydown', {key: 'Enter'});
   ```
 #### redux-mock-store
+ [API DOC](https://github.com/reduxjs/redux-mock-store#api)
+
 - config
   ```json
   {
     "redux-mock-store": "^1.5.4"
   }
   ```
+- [API DOC](https://github.com/reduxjs/redux-mock-store#api)
+  - [x] getActions
+    ```javascript
+    // be careful about getActions return.
+    expect(store.getActions()[0]).toEqual(togglePlayer());
+    ```
+  - [ ] getState
+  - [ ] dispatch
+  - [x] clearActions
+    ```javascript
+    beforeEach(() => {
+      store = mockStore({
+        playedState: 'stop',
+        loopMode: 'list'
+      });
 
-[API DOC](https://github.com/reduxjs/redux-mock-store#api)
-- getActions [v]
-  ```javascript
-  // be careful about getActions return.
-  expect(store.getActions()[0]).toEqual(togglePlayer());
-  ```
-- getState
-- dispatch
-- clearActions [v]
-  ```javascript
-  beforeEach(() => {
-    store = mockStore({
-      playedState: 'stop',
-      loopMode: 'list'
+      component = mount(
+        <Provider store={store}>
+          <Player />
+        </Provider>
+      );
+
+      // before each test item we clean already received actions
+      store.clearActions();
     });
-
-    component = mount(
-      <Provider store={store}>
-        <Player />
-      </Provider>
-    );
-
-    // before each test item we clean already received actions
-    store.clearActions();
-  });
-  ```
-- subscribe
-- replaceReducer
+    ```
+  - [ ] subscribe
+  - [ ] replaceReducer
 
 
 ### ROUTER

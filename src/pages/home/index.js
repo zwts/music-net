@@ -1,43 +1,26 @@
-import React from "react";
-import { Component } from "react";
+import React from 'react';
+import { Tab, TabPanel } from 'kaid'
+import Playlist from '../playlist'
+import SongList from '../songlist'
 
-import "./index.scss";
+import './index.scss';
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-
-    // not use bind?
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
-  componentDidMount() {
-    this.focus();
-  }
-
-  focus() {
-    this.element.focus();
-  }
-
-  handleKeyDown(e) {
-    switch (e.key) {
-      case 'Enter':
-        this.props.history.push('/player');
-        break;
-      case 'ArrowDown':
-        this.props.history.push('/playlist');
-        break;
-      default:
-        break;
-    }
-  }
-
-  render() {
-    return (
-      <div ref={ref => {this.element = ref}} onKeyDown={this.handleKeyDown} className="home" tabIndex="-1">
-        <span>Press Enter key into Player Screen</span>
-        <span>Press ArrowDown key into Playlist Screen</span>
-      </div>
-    )
-  }
+function Home() {
+  return (
+    <div className="home">
+      <Tab>
+        <TabPanel key="playlist" title="Playlist">
+          <Playlist />
+        </TabPanel>
+        <TabPanel key="songlist" title="Song">
+          <SongList />
+        </TabPanel>
+        <TabPanel key="found" title="Found">
+          <div tabIndex="-1">This is FMLIST</div>
+        </TabPanel>
+      </Tab>
+    </div>
+  );
 }
+
+export default Home;
