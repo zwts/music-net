@@ -6,6 +6,7 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
+  UPDATE_PLAYER_SONG_ID,
   REQUEST_PLAYLIST,
   RECEIVE_PLAYLIST,
   REQUEST_RECOMMEND_LIST,
@@ -13,13 +14,15 @@ import {
   FETCHING_FOUND_LIST,
   FETCH_FOUND_LIST_SUCCESS,
   FETCH_FOUND_LIST_FAILURE
-} from "./actionTypes";
+} from './actionTypes';
 
 const initialState = {
   loopMode: 'list',
   playedState: false,
   songUrl: null,
   loading: false,
+  playerSongId: '',
+  playerSongList: [],
   recommendData: [],
   foundData: [],
   playlistData: [], // state value, when playlist change.
@@ -69,6 +72,11 @@ export default function playerReducer(state = initialState, action) {
     case PLAY_PREVIOUS_SONG:
       return {
         ...state
+      };
+    case UPDATE_PLAYER_SONG_ID:
+      return {
+        ...state,
+        playerSongId: action.songId
       };
 
     // Playlist reducer

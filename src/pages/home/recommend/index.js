@@ -1,7 +1,6 @@
 import React, { useRef, useEffect }from "react";
 import { fetchRecommendList, fetchPlaylist } from "./actions";
 import { List, ListItem } from 'kaid';
-import store from '../../../redux/store';
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -10,13 +9,11 @@ import "./index.scss";
 
 const Recommend = (props) => {
   // TODO: May this do duplicate jobs when remount, need fix.
-  dump('recommend fetch list: ' + store.getState().recommendData.length);
-  if (!store.getState().recommendData.length) {
+  if (!props.recommendData.length) {
     dump('recommend fetch ');
     props.fetchRecommendList(2);
   }
 
-  const { recommendData }= props;
   const element = useRef(null);
   const list = useRef(null);
 
@@ -34,12 +31,8 @@ const Recommend = (props) => {
     const { key, target } = e;
 
     if (key === 'Enter') {
-      //TODO:  open Play list and show songs
       props.fetchPlaylist(target.dataset.id);
-      setTimeout(() => {
-        props.history.push('/playlist');
-      }, 1000);
-
+      props.history.push('/playlist');
     }
   }
 
@@ -65,7 +58,7 @@ const Recommend = (props) => {
       className="list-view"
       tabIndex="-1">
       <List ref={list}>
-        {recommendData && recommendData.map(recommend => (
+        {props.recommendData && props.recommendData.map(recommend => (
           createListItem(recommend)
         ))}
       </List>

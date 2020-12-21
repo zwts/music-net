@@ -1,16 +1,17 @@
-import { 
-  TOGGLE_PLAYER, 
-  FETCH_SONGURL_SUCCESS, 
-  CHANGE_PLAYER_MODE, 
-  FETCH_SONGURL_BEGIN, 
+import {
+  TOGGLE_PLAYER,
+  FETCH_SONGURL_SUCCESS,
+  CHANGE_PLAYER_MODE,
+  FETCH_SONGURL_BEGIN,
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
-  PLAY_PREVIOUS_SONG
-} from "./actionTypes";
-import { getSongUrl } from "../service/neteaseCloudMusicApi";
+  PLAY_PREVIOUS_SONG,
+  UPDATE_PLAYER_SONG_ID
+} from "../../redux/actionTypes";
+import { getSongUrl } from "../../service/neteaseCloudMusicApi";
 
-export const togglePlayer = () => ({ 
-  type: TOGGLE_PLAYER 
+export const togglePlayer = () => ({
+  type: TOGGLE_PLAYER
 });
 
 export const fetchSongUrlBegin = () => ({
@@ -40,13 +41,18 @@ export const changePlayerMode = playMode => ({
   mode: playMode
 });
 
+export const updatePlayerSongId = id => ({
+  type: UPDATE_PLAYER_SONG_ID,
+  songId: id
+});
+
 export function fetchSongUrl(id) {
   return dispatch => {
     dispatch(fetchSongUrlBegin());
     return  getSongUrl(id).then(res => {
-        dispatch(fetchSongUrlSuccess(res.data.data[0].url));
-        return res.data.data[0].url;
-      })
+      dispatch(fetchSongUrlSuccess(res.data.data[0].url));
+      return res.data.data[0].url;
+    })
       .catch(error => dispatch(fetchSongUrlFailure(error)));
   };
 }

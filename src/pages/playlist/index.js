@@ -1,28 +1,23 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem } from 'kaid';
+import { updatePlayerSongId } from '../player/actions';
 
 
 const Playlist = (props) => {
-  // const { playlistData } = props.playlistData;
   const element = useRef(null);
   const list = useRef(null);
 
   useEffect(() => {
     dump('playlist handle effect');
     dump(`playlistData:  ${JSON.stringify(props.playlistData)}`);
-    handleFocus();
-  }, [props.playlistData]);
-
-
-  function handleFocus() {
-    dump(`Playlist handle focus`);
     if (list) {
       list.current.container.focus();
     } else if (element) {
       element.current.focus();
     }
-  }
+  }, [props.playlistData]);
+
 
   function handleKeyDown(e) {
     dump(`Playlist handle keydown`);
@@ -30,10 +25,11 @@ const Playlist = (props) => {
     switch (key) {
       case 'Enter':
         const id = target.dataset.id;
-        //TODO:  open Player
+        props.updatePlayerSongId(id);
+        props.history.push('/player');
         break;
       case 'Backspace':
-        this.props.history.go(-1);
+        props.history.go(-1);
         e.preventDefault();
         e.stopPropagation();
         break;
@@ -61,7 +57,6 @@ const Playlist = (props) => {
     <div
       ref={element}
       onKeyDown={handleKeyDown}
-      onFocus={handleFocus}
       className="list-view"
       tabIndex="-1">
       <List ref={list}>
@@ -81,6 +76,8 @@ const mapStateToProps = state => {
 };
 
 // Map Redux actions to component props
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updatePlayerSongId
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

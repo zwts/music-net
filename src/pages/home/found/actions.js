@@ -2,7 +2,7 @@ import { getSearchResult } from '../../../service/neteaseCloudMusicApi';
 import {
   FETCHING_FOUND_LIST,
   FETCH_FOUND_LIST_SUCCESS,
-  FETCH_FOUND_LIST_FAILURE,
+  FETCH_FOUND_LIST_FAILURE
 } from '../../../redux/actionTypes';
 
 export const fetchingFoundList = () => ({
@@ -34,6 +34,7 @@ function parseFoundList(found) {
   const parsedFoundList = [];
   songsArray.forEach(song => {
     const parsedSong = {};
+    parsedSong.picUrl = song.al.picUrl;
     parsedSong.name = song.name;
     parsedSong.id = song.id;
     parsedSong.ar = song.ar[0].name;

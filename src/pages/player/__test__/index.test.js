@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import { togglePlayer, fetchSongUrl } from '../../../redux/playerActions';
+import { togglePlayer, fetchSongUrl } from '../actions';
 import thunk from 'redux-thunk';
 
 import Player from '../index';

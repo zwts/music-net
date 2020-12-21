@@ -1,5 +1,5 @@
 import axios from 'axios';
-const HOST = "http://172.31.28.31:3000";
+const HOST = "http://172.31.26.50:3000";
 
 /**
  * Get the the search result by keywords.
