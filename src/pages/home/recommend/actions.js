@@ -1,32 +1,30 @@
-import { getRecommendPlaylist } from "../service/neteaseCloudMusicApi";
+import { getRecommendPlaylist } from "../../../service/neteaseCloudMusicApi";
 import {
-  REQUEST_PLAYLIST,
-  RECEIVE_PLAYLIST,
-} from "./actionTypes";
+  REQUEST_RECOMMEND_LIST,
+  RECEIVE_RECOMMEND_LIST,
+} from "../../../redux/actionTypes";
 
-
-export const requestPlaylist = () => ({
-  type: REQUEST_PLAYLIST,
+export const requestRecommendList = () => ({
+  type: REQUEST_RECOMMEND_LIST,
 });
 
-export const reqceivePlaylist = data => ({
-  type: RECEIVE_PLAYLIST,
+export const receiveRecommendList = data => ({
+  type: RECEIVE_RECOMMEND_LIST,
   data: data
 });
 
-export const fetchPlaylist = (limit) => {
-  dump(`fetchPlaylist()`);
+export const fetchRecommendList = (limit) => {
+  dump(`fetchRecommendList`);
   return dispatch => {
-    dispatch(requestPlaylist());
+    dispatch(requestRecommendList());
     return getRecommendPlaylist(limit).then(result => {
-      const parsedList = parsePlaylist(result);
-      dispatch(reqceivePlaylist(parsedList));
+      const parsedList = parseRecommendList(result);
+      dispatch(receiveRecommendList(parsedList));
     });
   };
 };
 
-
-const samplePlaylist =
+const sampleRecommendList =
   {
     "data": {
       "hasTaste": false,
@@ -60,32 +58,17 @@ const samplePlaylist =
     }
   };
 
-
-function parsePlaylist(playlist) {
-  dump(`parsePlaylist(): ${JSON.stringify(playlist)}`);
-  const parsedPlaylist = [];
-  playlist.data.result.forEach(item => {
+function parseRecommendList(recommendList) {
+  dump(`parseRecommendList: ${JSON.stringify(recommendList)}`);
+  const parsedList = [];
+  recommendList.data.result.forEach(item => {
     const parsedItem = {};
     parsedItem.picUrl = item.picUrl;
     parsedItem.name = item.name;
     parsedItem.playCount = item.playCount;
     parsedItem.id = item.id;
-    parsedPlaylist.push(parsedItem);
+    parsedList.push(parsedItem);
   });
-  dump(`parsedPlaylist: ${JSON.stringify(parsedPlaylist)}`);
-  return parsedPlaylist;
-}
-
-function parseSongsList(songsList) {
-  const songsArray = songsList.data.result.songs;
-  const parsedSongsList = [];
-  songsArray.forEach(song => {
-    const parsedSong = {};
-    parsedSong.name = song.name;
-    parsedSong.id = song.id;
-    parsedSong.ar = song.ar[0].name;
-    parsedSongsList.push(parsedSong);
-  });
-  dump(`parseSongsList(): ${JSON.stringify(parsedSongsList)}`);
-  return parsedSongsList;
+  dump(`parsedList: ${JSON.stringify(parsedList)}`);
+  return parsedList;
 }

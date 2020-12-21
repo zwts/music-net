@@ -6,18 +6,20 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
-  REQUEST_PLAYLIST,
-  RECEIVE_PLAYLIST,
-  FETCHING_PLAYLIST,
-  FETCH_PLAYLIST_SUCCESS,
-  FETCH_PLAYLIST_FAILURE
+  REQUEST_RECOMMEND_LIST,
+  RECEIVE_RECOMMEND_LIST,
+  FETCHING_FOUND_LIST,
+  FETCH_FOUND_LIST_SUCCESS,
+  FETCH_FOUND_LIST_FAILURE
 } from "./actionTypes";
 
 const initialState = {
   loopMode: 'list',
   playedState: false,
   songUrl: null,
-  loading: false
+  loading: false,
+  recommendData: [],
+  songsData: []
 };
 
 export default function playerReducer(state = initialState, action) {
@@ -66,28 +68,27 @@ export default function playerReducer(state = initialState, action) {
         ...state
       };
     // Playlist reducer
-    case REQUEST_PLAYLIST:
+    case REQUEST_RECOMMEND_LIST:
       return {
         ...state
       };
-    case RECEIVE_PLAYLIST:
-      dump(`playlist Reducer success: ${JSON.stringify(action.data)}`);
+    case RECEIVE_RECOMMEND_LIST:
+      dump(`recommend Reducer success: ${JSON.stringify(action.data)}`);
       return {
         ...state,
-        itemsData: action.data
+        recommendData: action.data
       };
-
-    case FETCHING_PLAYLIST:
+    case FETCHING_FOUND_LIST:
       return {
         ...state
       };
-    case FETCH_PLAYLIST_SUCCESS:
-      dump(`songlist Reducer success: ${JSON.stringify(action.data)}`);
+    case FETCH_FOUND_LIST_SUCCESS:
+      dump(`found Reducer success: ${JSON.stringify(action.data)}`);
       return {
         ...state,
-        songsData: action.data
+        foundData: action.data
       };
-    case FETCH_PLAYLIST_FAILURE:
+    case FETCH_FOUND_LIST_FAILURE:
       return {
         ...state
       };

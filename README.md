@@ -6,6 +6,36 @@
 4. Push Application into device first time(? -> shi.tan)
 5. Make install `APP=music-net make install-gaia` any time when code updated.
 
+### STRUCTURE
+
+```mermaid
+graph TB;
+
+a[music-net]
+b[Home]
+c[Playlist]
+d[Player]
+e[Recommend]
+f[Found]
+g[Me]
+
+ subgraph router
+ a --> d
+ a --> b
+ a --> c
+ end
+ 
+ subgraph tab
+ b --> e
+ b --> f
+ b --> g
+ end
+
+
+
+```
+
+
 ### Test
 #### Test Samples
 - Test SnapShot
