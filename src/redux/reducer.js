@@ -6,6 +6,8 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
+  REQUEST_PLAYLIST,
+  RECEIVE_PLAYLIST,
   REQUEST_RECOMMEND_LIST,
   RECEIVE_RECOMMEND_LIST,
   FETCHING_FOUND_LIST,
@@ -19,7 +21,8 @@ const initialState = {
   songUrl: null,
   loading: false,
   recommendData: [],
-  songsData: []
+  foundData: [],
+  playlistData: [], // state value, when playlist change.
 };
 
 export default function playerReducer(state = initialState, action) {
@@ -67,7 +70,21 @@ export default function playerReducer(state = initialState, action) {
       return {
         ...state
       };
+
     // Playlist reducer
+    case REQUEST_PLAYLIST:
+      return {
+        ...state
+      };
+
+    case RECEIVE_PLAYLIST:
+      dump(`playlistReducer() success: ${JSON.stringify(action.data)}`);
+      return {
+        ...state,
+        playlistData: action.data
+      };
+
+    // Recommend reducer
     case REQUEST_RECOMMEND_LIST:
       return {
         ...state
@@ -78,6 +95,8 @@ export default function playerReducer(state = initialState, action) {
         ...state,
         recommendData: action.data
       };
+
+    //Found Reducer
     case FETCHING_FOUND_LIST:
       return {
         ...state

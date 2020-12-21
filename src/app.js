@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import Home from './pages/home';
 import Player from './pages/player';
+import Playlist from './pages/playlist';
 
 import './app.scss';
 
@@ -21,6 +22,7 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path='/' component={Home} />
+            <Route exact path='/playlist' component={Playlist} />
             {/*<Route exact path='/player' component={Player} />*/}
 
             <Redirect to='/' />

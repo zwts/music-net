@@ -1,8 +1,10 @@
 import React, { useRef, useEffect }from "react";
-import { fetchRecommendList } from "./actions";
+import { fetchRecommendList, fetchPlaylist } from "./actions";
 import { List, ListItem } from 'kaid';
 import store from '../../../redux/store';
 import { connect } from "react-redux";
+import { compose } from 'redux';
+import { withRouter } from 'react-router';
 
 import "./index.scss";
 
@@ -13,7 +15,6 @@ const Recommend = (props) => {
     dump('recommend fetch ');
     props.fetchRecommendList(2);
   }
-
 
   const { recommendData }= props;
   const element = useRef(null);
@@ -30,19 +31,26 @@ const Recommend = (props) => {
 
   function handleKeyDown(e) {
     dump(`recommend handle keydown`);
-    if (e.key === 'Enter') {
+    const { key, target } = e;
+
+    if (key === 'Enter') {
       //TODO:  open Play list and show songs
+      props.fetchPlaylist(target.dataset.id);
+      setTimeout(() => {
+        props.history.push('/playlist');
+      }, 1000);
+
     }
   }
 
   function createListItem(itemsData) {
     const { picUrl, name, playCount, id } = itemsData;
     const options = {};
-    // options.icon = picUrl;
+    picUrl && (options.icon = picUrl);
     options.primary = name;
     options.secondary = playCount;
-    options.id = id;
     options.focusable = 'true';
+    options.data = { 'data-id': id };
 
     return (
       <ListItem {...options}/>
@@ -73,8 +81,11 @@ const mapStateToProps = state => {
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
-  fetchRecommendList
+  fetchRecommendList,
+  fetchPlaylist
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Recommend);
-
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Recommend);

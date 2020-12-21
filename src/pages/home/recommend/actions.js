@@ -1,9 +1,12 @@
-import { getRecommendPlaylist } from "../../../service/neteaseCloudMusicApi";
+import { getRecommendPlaylist, getPlaylistDetail } from "../../../service/neteaseCloudMusicApi";
 import {
   REQUEST_RECOMMEND_LIST,
   RECEIVE_RECOMMEND_LIST,
+  REQUEST_PLAYLIST,
+  RECEIVE_PLAYLIST
 } from "../../../redux/actionTypes";
 
+// Actions for recommend
 export const requestRecommendList = () => ({
   type: REQUEST_RECOMMEND_LIST,
 });
@@ -71,4 +74,42 @@ function parseRecommendList(recommendList) {
   });
   dump(`parsedList: ${JSON.stringify(parsedList)}`);
   return parsedList;
+}
+
+// actions for play list
+export const requestPlaylist = () => ({
+  type: REQUEST_PLAYLIST,
+});
+
+export const receivePlaylist = data => ({
+  type: RECEIVE_PLAYLIST,
+  data: data
+});
+
+
+export const fetchPlaylist = (playlistId) => {
+  dump(`fetchPlaylist ---`);
+  return dispatch => {
+    dispatch(requestPlaylist());
+    return getPlaylistDetail(playlistId).then(result => {
+      const parsedList = parsePlaylist(result);
+      dispatch(receivePlaylist(parsedList));
+    });
+  };
+};
+
+function parsePlaylist(songs) {
+  const songsArray = songs.data.playlist.tracks;
+  dump(`parsePlaylist(): ${JSON.stringify(songsArray)}`);
+  const parsedSongsList = [];
+  songsArray.forEach(song => {
+    const parsedSong = {};
+    parsedSong.picUrl = song.al.picUrl;
+    parsedSong.name = song.name;
+    parsedSong.id = song.id;
+    parsedSong.ar = song.ar[0].name;
+    parsedSongsList.push(parsedSong);
+  });
+  dump(`parsePlaylist(): ${JSON.stringify(parsedSongsList)}`);
+  return parsedSongsList;
 }

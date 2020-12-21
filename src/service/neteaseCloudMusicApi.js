@@ -50,3 +50,16 @@ export function getFeaturedPlayList(limit, order) {
 
   return axios.get(url);
 }
+
+
+/**
+ * Get the Playlist detail
+ *
+ * @param playlistId id number of a playlist
+ */
+export function getPlaylistDetail(playlistId) {
+  const API = '/playlist/detail';
+  const url = HOST + API + '?id=' + playlistId;
+
+  return axios.get(url);
+}

@@ -155,6 +155,20 @@ g[Me]
   - [ ] replaceReducer
 
 
+## IN CODE
+### Redux
+1. compose:
+```javascript
+import { compose } from 'redux';
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Recommend);
+```
+
+
+
 ### ROUTER
 
 lib: "react-router-dom": "^5.2.0"
@@ -181,6 +195,12 @@ lib: "react-router-dom": "^5.2.0"
 2. `<Redirect />`
 
    default KaiOS app location will be `app://music-net.gaiamobile.org/index.html`, use `<Redirect />` will let location change to `app://music-net.gaiamobile.org/` as wish to show `Home`
+
+3. `withRouter`
+```javascript
+import { withRouter } from 'react-router';
+```
+
 
 ### FOCUS
 
