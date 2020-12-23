@@ -1,6 +1,8 @@
-import React, { useRef, useEffect }from "react";
-import { fetchRecommendList, fetchPlaylist } from "./actions";
-import { List, ListItem } from 'kaid';
+import React, { useRef, useEffect }from 'react';
+import { fetchRecommendList } from './actions';
+import { updatePlaylistInfo } from '../../playlist/actions'
+import { fetchPlaylist } from '../../playlist/actions';
+import { List, ListItem, Spin } from 'kaid';
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -17,9 +19,14 @@ const Recommend = (props) => {
   const element = useRef(null);
   const list = useRef(null);
 
-  function handleFocus() {
+  useEffect(() => {
+    dump('effect: loading state change');
+    onFocus();
+  }, [props.recommendData]);
+
+  function onFocus() {
     dump(`recommend handle focus`);
-    if (list) {
+    if (list.current) {
       list.current.container.focus();
     } else if (element) {
       element.current.focus();
@@ -31,9 +38,18 @@ const Recommend = (props) => {
     const { key, target } = e;
 
     if (key === 'Enter') {
+      props.updatePlaylistInfo(getPlaylistInfo(target.dataset.id));
       props.fetchPlaylist(target.dataset.id);
       props.history.push('/playlist');
     }
+  }
+
+  function getPlaylistInfo(id) {
+    props.recommendData && props.recommendData.map(recommend => {
+      if (recommend.id === id) {
+        return recommend;
+      }
+    });
   }
 
   function createListItem(itemsData) {
@@ -54,28 +70,33 @@ const Recommend = (props) => {
     <div
       ref={element}
       onKeyDown={handleKeyDown}
-      onFocus={handleFocus}
+      onFocus={onFocus}
       className="list-view"
       tabIndex="-1">
-      <List ref={list}>
-        {props.recommendData && props.recommendData.map(recommend => (
-          createListItem(recommend)
-        ))}
-      </List>
+      {props.loading ?
+        <Spin/> :
+        <List ref={list}>
+          {props.recommendData && props.recommendData.map(recommend => (
+            createListItem(recommend)
+          ))}
+        </List>
+      }
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    recommendData: state.recommendData,
+    recommendData: state.recommend.recommendData,
+    loading: state.recommend.loading
   };
 };
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
   fetchRecommendList,
-  fetchPlaylist
+  fetchPlaylist,
+  updatePlaylistInfo
 };
 
 export default compose(

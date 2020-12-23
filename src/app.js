@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect } from "react-router-dom";
+  Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import store from './redux/store';
@@ -15,22 +14,20 @@ import Playlist from './pages/playlist';
 
 import './app.scss';
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route exact path='/playlist' component={Playlist} />
-            <Route exact path='/player' component={Player} />
+function App() {
+ return (
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/playlist' component={Playlist} />
+        <Route exact path='/player' component={Player} />
 
-            <Redirect to='/' />
-          </Switch>
-        </Router>
-      </Provider>
-    );
-  }
+        <Redirect to='/' />
+      </Switch>
+    </Router>
+  </Provider>
+ );
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

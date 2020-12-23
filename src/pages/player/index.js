@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import { connect } from "react-redux";
-import { togglePlayer, fetchSongUrl } from "./actions";
+import React, { useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { togglePlayer, fetchSongUrl } from './actions';
+import { Spin } from 'kaid';
 
 import "./index.scss";
 
@@ -55,9 +56,14 @@ const Player = (props) => {
       onKeyDown={handleKeyDown}
       className="player"
       tabIndex="-1">
-      <span className="p-pri">{mode}</span>
-      <span className="p-sec">{ played ? 'play' : 'stop' }</span>
-      <audio ref={player} controls src={songUrl}></audio>
+      {loading ?
+        <Spin /> :
+        <>
+          <span className="p-pri">{mode}</span>
+          <span className="p-sec">{ played ? 'play' : 'stop' }</span>
+          <audio ref={player} controls src={songUrl}></audio>
+        </>
+      }
     </div>
   );
 };
@@ -65,11 +71,12 @@ const Player = (props) => {
 // Map Redux state to component props
 const mapStateToProps = state => {
   return {
-    mode: state.loopMode,
-    played: state.playedState,
-    songUrl: state.songUrl,
-    songList: state.playerSongList,
-    songId: state.playerSongId
+    mode: state.player.loopMode,
+    played: state.player.played,
+    songUrl: state.player.songUrl,
+    songs: state.player.songs,
+    songId: state.player.songId,
+    error: state.player.error
   }
 };
 

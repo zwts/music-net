@@ -6,7 +6,7 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
-  UPDATE_PLAYER_SONG_ID
+  UPDATE_PLAYER_SONGS
 } from "../../redux/actionTypes";
 import { getSongUrl } from "../../service/neteaseCloudMusicApi";
 
@@ -41,9 +41,10 @@ export const changePlayerMode = playMode => ({
   mode: playMode
 });
 
-export const updatePlayerSongId = id => ({
-  type: UPDATE_PLAYER_SONG_ID,
-  songId: id
+export const updatePlayerSongs = (id, songs) => ({
+  type: UPDATE_PLAYER_SONGS,
+  songId: id,
+  songs: songs
 });
 
 export function fetchSongUrl(id) {
@@ -51,7 +52,6 @@ export function fetchSongUrl(id) {
     dispatch(fetchSongUrlBegin());
     return  getSongUrl(id).then(res => {
       dispatch(fetchSongUrlSuccess(res.data.data[0].url));
-      return res.data.data[0].url;
     })
       .catch(error => dispatch(fetchSongUrlFailure(error)));
   };

@@ -1,18 +1,18 @@
-import { getRecommendPlaylist, getPlaylistDetail } from "../../../service/neteaseCloudMusicApi";
+import { getRecommendPlaylist } from "../../../service/neteaseCloudMusicApi";
 import {
   REQUEST_RECOMMEND_LIST,
-  RECEIVE_RECOMMEND_LIST,
-  REQUEST_PLAYLIST,
-  RECEIVE_PLAYLIST
+  RECEIVE_RECOMMEND_LIST
 } from "../../../redux/actionTypes";
 
 // Actions for recommend
 export const requestRecommendList = () => ({
   type: REQUEST_RECOMMEND_LIST,
+  loading: true
 });
 
 export const receiveRecommendList = data => ({
   type: RECEIVE_RECOMMEND_LIST,
+  loading: false,
   data: data
 });
 
@@ -27,40 +27,6 @@ export const fetchRecommendList = (limit) => {
   };
 };
 
-const sampleRecommendList =
-  {
-    "data": {
-      "hasTaste": false,
-      "code": 200,
-      "category": 0,
-      "result": [{
-        "id": 4926865057,
-        "type": 0,
-        "name": "夜间咖啡馆|西餐馆|傍晚的乐器演奏家",
-        "copywriter": "编辑推荐：本单包含Bossa nova、民谣风、爵士乐、中世纪风格",
-        "picUrl": "https://p1.music.126.net/Jh1iS5wFR5Xz_GNML996VA==/109951165046243126.jpg",
-        "canDislike": false,
-        "trackNumberUpdateTime": 1607590232764,
-        "playCount": 83431,
-        "trackCount": 28,
-        "highQuality": false,
-        "alg": "featured"
-      }, {
-        "id": 5097412008,
-        "type": 0,
-        "name": "网郁云 “那晚我悲痛欲绝”",
-        "copywriter": "热门歌单推荐",
-        "picUrl": "https://p1.music.126.net/2YOC31gtmRjoB-K5FSOE_w==/109951165520586580.jpg",
-        "canDislike": true,
-        "trackNumberUpdateTime": 1607996811286,
-        "playCount": 946498,
-        "trackCount": 260,
-        "highQuality": false,
-        "alg": "hot_server"
-      }]
-    }
-  };
-
 function parseRecommendList(recommendList) {
   dump(`parseRecommendList: ${JSON.stringify(recommendList)}`);
   const parsedList = [];
@@ -74,42 +40,4 @@ function parseRecommendList(recommendList) {
   });
   dump(`parsedList: ${JSON.stringify(parsedList)}`);
   return parsedList;
-}
-
-// actions for play list
-export const requestPlaylist = () => ({
-  type: REQUEST_PLAYLIST,
-});
-
-export const receivePlaylist = data => ({
-  type: RECEIVE_PLAYLIST,
-  data: data
-});
-
-
-export const fetchPlaylist = (playlistId) => {
-  dump(`fetchPlaylist ---`);
-  return dispatch => {
-    dispatch(requestPlaylist());
-    return getPlaylistDetail(playlistId).then(result => {
-      const parsedList = parsePlaylist(result);
-      dispatch(receivePlaylist(parsedList));
-    });
-  };
-};
-
-function parsePlaylist(songs) {
-  const songsArray = songs.data.playlist.tracks;
-  dump(`parsePlaylist(): ${JSON.stringify(songsArray)}`);
-  const parsedSongsList = [];
-  songsArray.forEach(song => {
-    const parsedSong = {};
-    parsedSong.picUrl = song.al.picUrl;
-    parsedSong.name = song.name;
-    parsedSong.id = song.id;
-    parsedSong.ar = song.ar[0].name;
-    parsedSongsList.push(parsedSong);
-  });
-  dump(`parsePlaylist(): ${JSON.stringify(parsedSongsList)}`);
-  return parsedSongsList;
 }

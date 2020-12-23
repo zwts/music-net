@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchFoundList } from './actions';
-import { updatePlayerSongId } from '../../player/actions'
+import { updatePlayerSongs } from '../../player/actions'
 import { List, ListItem } from 'kaid';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -21,15 +21,17 @@ const Found = (props) => {
 
   function handleKeyDown(e) {
     dump('Found handle key down');
-    if (e.key === 'Enter') {
-      props.updatePlayerSongId();
+    const { key, target } = e;
+    if (key === 'Enter') {
+      const id = target.dataset.id;
+      props.updatePlayerSongs(id, props.foundData);
       props.history.push('/player');
     }
   }
 
   function handleFocus() {
     dump(`Found handle focus`);
-    if (list) {
+    if (list.current.container) {
       list.current.container.focus();
     } else if (element) {
       element.current.focus();
@@ -75,7 +77,7 @@ const mapStateToProps = state => {
 // Map Redux actions to component props
 const mapDispatchToProps = {
   fetchFoundList,
-  updatePlayerSongId
+  updatePlayerSongs
 };
 
 export default compose(

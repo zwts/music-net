@@ -3,7 +3,7 @@
 1. Clone project to `gaia/apps/`
 2. Add "app/music-net" in `gaia/build/config/phone/apps-engineering.list` & `build/config/phone/apps-production.list`
 3. Run `APP=music-net make`
-4. Push Application into device first time(? -> shi.tan)
+4. Push Application into device first time
 5. Make install `APP=music-net make install-gaia` any time when code updated.
 
 ### STRUCTURE
@@ -34,6 +34,52 @@ g[Me]
 
 
 ```
+
+### neteaseCloudMusic API use
+1. To ensure that current server can be used normally, please connect your phone to `kaios-2G`.
+2. API server is currently temporarily set up on wenyan's local PC to facilitate development, and later needs to be integrated in the code to directly access the netease cloud api.
+3. If you want to build an api server by yourself, follow these step:
+- fetch this github: [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) code to your local, start server by use: `node app.js`
+- modify music-net/src/service/neteaseCloudMusicApi.js `HOST` parameter to `http://$(local ip address):3000`
+- make sure your PC and device are connected to the same wifi.
+
+#### Recommend
+```javascript
+const sampleRecommendList =
+  {
+    "data": {
+      "hasTaste": false,
+      "code": 200,
+      "category": 0,
+      "result": [{
+        "id": 4926865057,
+        "type": 0,
+        "name": "夜间咖啡馆|西餐馆|傍晚的乐器演奏家",
+        "copywriter": "编辑推荐：本单包含Bossa nova、民谣风、爵士乐、中世纪风格",
+        "picUrl": "https://p1.music.126.net/Jh1iS5wFR5Xz_GNML996VA==/109951165046243126.jpg",
+        "canDislike": false,
+        "trackNumberUpdateTime": 1607590232764,
+        "playCount": 83431,
+        "trackCount": 28,
+        "highQuality": false,
+        "alg": "featured"
+      }, {
+        "id": 5097412008,
+        "type": 0,
+        "name": "网郁云 “那晚我悲痛欲绝”",
+        "copywriter": "热门歌单推荐",
+        "picUrl": "https://p1.music.126.net/2YOC31gtmRjoB-K5FSOE_w==/109951165520586580.jpg",
+        "canDislike": true,
+        "trackNumberUpdateTime": 1607996811286,
+        "playCount": 946498,
+        "trackCount": 260,
+        "highQuality": false,
+        "alg": "hot_server"
+      }]
+    }
+  };
+```
+
 
 
 ### Test
