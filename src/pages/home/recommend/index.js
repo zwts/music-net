@@ -45,11 +45,13 @@ const Recommend = (props) => {
   }
 
   function getPlaylistInfo(id) {
-    props.recommendData && props.recommendData.map(recommend => {
-      if (recommend.id === id) {
-        return recommend;
+    let info;
+    props.recommendData.forEach((playlist) => {
+      if(playlist.id == id) {
+        info = playlist;
       }
     });
+    return info;
   }
 
   function createListItem(itemsData) {

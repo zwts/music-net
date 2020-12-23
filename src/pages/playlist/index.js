@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { List, ListItem, Spin } from 'kaid';
 import { updatePlayerSongs } from '../player/actions';
 
+import './index.scss';
 
 const Playlist = (props) => {
   const element = useRef(null);
@@ -52,21 +53,26 @@ const Playlist = (props) => {
     );
   }
 
-
   return (
     <div
       ref={element}
       onKeyDown={handleKeyDown}
-      className="list-view"
+      className="playlist-view"
       tabIndex="-1">
-      {props.loading ?
-        <Spin/> :
-        <List ref={list}>
-          {props.playlistData && props.playlistData.map(song => (
-            createListItem(song)
-          ))}
-        </List>
-      }
+      <div className="playlist-info" style={{backgroundImage: `url(${props.info.picUrl})`}}>
+        <span className="playlist-name p-pri">{props.info.name}</span>
+        <span className="playlist-count p-sec">{props.info.playCount}</span>
+      </div>
+      <div className="playlist-list">
+        {props.loading ?
+          <Spin/> :
+          <List ref={list}>
+            {props.playlistData && props.playlistData.map(song => (
+              createListItem(song)
+            ))}
+          </List>
+        }
+      </div>
     </div>
   );
 };

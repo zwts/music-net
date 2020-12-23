@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { togglePlayer, fetchSongUrl } from './actions';
 import { Spin } from 'kaid';
 
-import "./index.scss";
+import './index.scss';
 
 const Player = (props) => {
   const { mode, played, error, loading, songUrl, songId, songList } = props;
@@ -16,7 +16,6 @@ const Player = (props) => {
   }
 
   useEffect(() => {
-    dump('player handle effect');
     if (element) {
       element.current.focus();
     }
@@ -24,6 +23,7 @@ const Player = (props) => {
 
   function togglePlay() {
     if (player) {
+      dump('toggle player');
       props.played ? player.current.pause() : player.current.play();
       props.togglePlayer();
     }
@@ -61,7 +61,7 @@ const Player = (props) => {
         <>
           <span className="p-pri">{mode}</span>
           <span className="p-sec">{ played ? 'play' : 'stop' }</span>
-          <audio ref={player} controls src={songUrl}></audio>
+          <audio ref={player} controls src={props.songUrl}></audio>
         </>
       }
     </div>

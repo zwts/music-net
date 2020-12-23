@@ -57,7 +57,7 @@ export default function playerReducer(state = initialState, action) {
         ...state,
         player: {
           ...state.player,
-          loading: true
+          loading: action.loading,
         }
       };
     case FETCH_SONGURL_SUCCESS:
@@ -66,14 +66,14 @@ export default function playerReducer(state = initialState, action) {
         ...state,
         player: {
           ...state.player,
-          loading: false,
+          loading: action.loading,
           songUrl: action.songUrl
         }
       };
     case FETCH_SONGURL_FAILURE:
       // When fetch failed, set loading to false,
       // may show error toaster in the further
-      dump('loading fail');
+      dump('FETCH_SONGURL_FAILURE');
       return {
         ...state,
         player: {

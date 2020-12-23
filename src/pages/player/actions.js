@@ -1,8 +1,8 @@
 import {
   TOGGLE_PLAYER,
-  FETCH_SONGURL_SUCCESS,
   CHANGE_PLAYER_MODE,
   FETCH_SONGURL_BEGIN,
+  FETCH_SONGURL_SUCCESS,
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
@@ -15,17 +15,19 @@ export const togglePlayer = () => ({
 });
 
 export const fetchSongUrlBegin = () => ({
-  type: FETCH_SONGURL_BEGIN
+  type: FETCH_SONGURL_BEGIN,
+  loading: true
 });
 
 export const fetchSongUrlSuccess = songUrl => ({
   type: FETCH_SONGURL_SUCCESS,
-  songUrl
+  loading: false,
+  songUrl: songUrl
 });
 
 export const fetchSongUrlFailure = error => ({
   type: FETCH_SONGURL_FAILURE,
-  error
+  error: error
 });
 
 export const playNextSong = () => ({
