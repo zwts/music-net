@@ -6,7 +6,7 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
-  UPDATE_PLAYER_SONGS,
+  UPDATE_PLAYER,
   REQUEST_PLAYLIST,
   RECEIVE_PLAYLIST,
   UPDATE_PLAYLIST_INFO,
@@ -24,6 +24,7 @@ const initialState = {
     played: false, // player state, play or not
     loopMode: 'list', // current play mode
     songId: '', // current play song id
+    song: null,
     songs: [], // compute next or previous song
     songUrl: null, // current play song url
   },
@@ -101,12 +102,13 @@ export default function playerReducer(state = initialState, action) {
       return {
         ...state
       };
-    case UPDATE_PLAYER_SONGS:
+    case UPDATE_PLAYER:
       return {
         ...state,
         player: {
           ...state.player,
           songId: action.songId,
+          song: action.song,
           songs: action.songs
         }
       };

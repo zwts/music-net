@@ -10,28 +10,24 @@ import { withRouter } from 'react-router';
 import "./index.scss";
 
 const Recommend = (props) => {
-  // TODO: May this do duplicate jobs when remount, need fix.
-  if (!props.recommendData.length) {
-    dump('recommend fetch ');
-    props.fetchRecommendList(2);
-  }
-
   const element = useRef(null);
   const list = useRef(null);
 
   useEffect(() => {
-    dump('effect: loading state change');
-    onFocus();
-  }, [props.recommendData]);
+    if (!props.recommendData.length) {
+      dump('recommend fetch ');
+      props.fetchRecommendList(2);
+    }
+  }, []);
 
-  function onFocus() {
-    dump(`recommend handle focus`);
+  useEffect(() => {
+    dump('effect: loading state change');
     if (list.current) {
       list.current.container.focus();
     } else if (element) {
       element.current.focus();
     }
-  }
+  }, [props.recommendData]);
 
   function handleKeyDown(e) {
     dump(`recommend handle keydown`);
@@ -72,7 +68,6 @@ const Recommend = (props) => {
     <div
       ref={element}
       onKeyDown={handleKeyDown}
-      onFocus={onFocus}
       className="list-view"
       tabIndex="-1">
       {props.loading ?

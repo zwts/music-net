@@ -79,7 +79,33 @@ const sampleRecommendList =
     }
   };
 ```
-
+#### Playlist
+```json
+[{
+  "picUrl":"http://p3.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg",
+  "name":"corpse bride",
+  "id":490602785,
+  "ar":"AVALON"
+ },
+ {
+  "picUrl":"http://p3.music.126.net/xa_9E77HUiQUdsCWwcHkOw==/109951163534309771.jpg",
+  "name":"For a While",
+  "id":1307474593,
+  "ar":"Fenne Lily"
+ },
+ {
+  "picUrl":"http://p4.music.126.net/4YLeBH86MTluZLqojCz9nQ==/109951164616015223.jpg",
+  "name":"Loving Strangers",
+  "id":2788529,
+  "ar":"Jocelyn Pook"
+ },
+ {
+   "picUrl":"http://p3.music.126.net/xTzZZgKDPYA83qsVcwmBpA==/109951164514880022.jpg",
+   "name":"12.25.16 [untitled christmas song]",
+   "id":1406360777,
+   "ar":"Crywolf"
+ }]
+```
 
 
 ### Test

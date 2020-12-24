@@ -6,14 +6,17 @@ import { Spin } from 'kaid';
 import './index.scss';
 
 const Player = (props) => {
-  const { mode, played, error, loading, songUrl, songId, songList } = props;
+  const { mode, played, error, loading, songUrl, songId, song, songList } = props;
   const element = useRef(null);
   const player = useRef(null);
+  const disc = useRef(null);
 
-  if (songId) {
-    dump('Player fetch song url with id: ' + songId);
-    props.fetchSongUrl(songId);
-  }
+  useEffect(() => {
+    if (songId) {
+      dump('Player fetch song url with id: ' + songId);
+      props.fetchSongUrl(songId);
+    }
+  }, [props.songId]);
 
   useEffect(() => {
     if (element) {
@@ -24,7 +27,8 @@ const Player = (props) => {
   function togglePlay() {
     if (player) {
       dump('toggle player');
-      props.played ? player.current.pause() : player.current.play();
+      disc.current.classList.toggle('wheel', !played);
+      played ? player.current.pause() : player.current.play();
       props.togglePlayer();
     }
   }
@@ -59,9 +63,16 @@ const Player = (props) => {
       {loading ?
         <Spin /> :
         <>
-          <span className="p-pri">{mode}</span>
+        <div className="player-info">
+          <span className="song-name p-pri">{song.name}</span>
+          <span className="song-art p-sec">{song.ar}</span>
+          <div ref={disc} className="song-disc" style={{backgroundImage: `url(${song.picUrl})`}}></div>
+        </div>
+        <div className="player-controller">
+          <span className="p-sec">{mode}</span>
           <span className="p-sec">{ played ? 'play' : 'stop' }</span>
-          <audio ref={player} controls src={props.songUrl}></audio>
+          <audio ref={player} src={songUrl}></audio>
+        </div>
         </>
       }
     </div>
@@ -74,8 +85,9 @@ const mapStateToProps = state => {
     mode: state.player.loopMode,
     played: state.player.played,
     songUrl: state.player.songUrl,
-    songs: state.player.songs,
     songId: state.player.songId,
+    song: state.player.song,
+    songs: state.player.songs,
     error: state.player.error
   }
 };

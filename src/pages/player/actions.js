@@ -6,7 +6,7 @@ import {
   FETCH_SONGURL_FAILURE,
   PLAY_NEXT_SONG,
   PLAY_PREVIOUS_SONG,
-  UPDATE_PLAYER_SONGS
+  UPDATE_PLAYER
 } from "../../redux/actionTypes";
 import { getSongUrl } from "../../service/neteaseCloudMusicApi";
 
@@ -43,9 +43,10 @@ export const changePlayerMode = playMode => ({
   mode: playMode
 });
 
-export const updatePlayerSongs = (id, songs) => ({
-  type: UPDATE_PLAYER_SONGS,
+export const updatePlayer = (id, song, songs) => ({
+  type: UPDATE_PLAYER,
   songId: id,
+  song: song,
   songs: songs
 });
 

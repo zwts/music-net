@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, Spin } from 'kaid';
-import { updatePlayerSongs } from '../player/actions';
+import { updatePlayer } from '../player/actions';
 
 import './index.scss';
 
@@ -20,13 +20,26 @@ const Playlist = (props) => {
   });
 
 
+  function getSongFromPlaylist(id) {
+    let matched;
+    props.playlistData.forEach((song) => {
+      // id will be string number or number
+      if(song.id == id) {
+        matched = song;
+      }
+    });
+    return matched;
+  }
+
   function handleKeyDown(e) {
-    dump(`Playlist handle keydown`);
     const { key, target } = e;
     switch (key) {
       case 'Enter':
-        const id = target.dataset.id;
-        props.updatePlayerSongs(id, props.playlistData);
+        dump(`Playlist handle keydown`);
+        props.updatePlayer(
+          target.dataset.id,
+          getSongFromPlaylist(target.dataset.id),
+          props.playlistData);
         props.history.push('/player');
         break;
       case 'Backspace':
@@ -88,7 +101,7 @@ const mapStateToProps = state => {
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
-  updatePlayerSongs
+  updatePlayer
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);
