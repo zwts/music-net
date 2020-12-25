@@ -21,7 +21,7 @@ const initialState = {
   player: {
     loading: false, // padding state for fetch song url from server
     error: null, // error value when fetch song url from server failed
-    played: false, // player state, play or not
+    playState: false, // player state, play or not
     loopMode: 'list', // current play mode
     songId: '', // current play song id
     song: null,
@@ -48,7 +48,7 @@ export default function playerReducer(state = initialState, action) {
         ...state,
         player: {
           ...state.player,
-          played: !state.player.played
+          playState: !state.player.playState
         }
       };
     }

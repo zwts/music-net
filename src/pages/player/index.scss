@@ -8,7 +8,7 @@
 }
 
 .player-info {
-  height: calc(100% - 12rem);
+  height: calc(100% - 8rem);
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -16,8 +16,8 @@
   justify-content: center;
   align-items: center;
   .song-disc {
-    height: 12rem;
-    width: 12rem;
+    height: 16rem;
+    width: 16rem;
     border: 3px solid var(--highlight-color);
     border-radius: 50%;
     background-size: cover;
@@ -27,7 +27,7 @@
 }
 
 .player-controller {
-  height: 12rem;
+  height: 8rem;
   width: 100%;
 }
 
@@ -36,6 +36,11 @@
   animation-duration: 12000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  animation-play-state:running;
+}
+
+.brake {
+  animation-play-state:paused;
 }
 
 @keyframes wheel {

@@ -29,6 +29,15 @@ const Recommend = (props) => {
     }
   }, [props.recommendData]);
 
+  function onFocus() {
+    dump('recommend onFocus.');
+    if (list.current) {
+      list.current.container.focus();
+    } else if (element) {
+      element.current.focus();
+    }
+  }
+
   function handleKeyDown(e) {
     dump(`recommend handle keydown`);
     const { key, target } = e;
@@ -68,6 +77,7 @@ const Recommend = (props) => {
     <div
       ref={element}
       onKeyDown={handleKeyDown}
+      onFocus={onFocus}
       className="list-view"
       tabIndex="-1">
       {props.loading ?

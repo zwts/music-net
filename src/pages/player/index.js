@@ -6,9 +6,9 @@ import { Spin } from 'kaid';
 import './index.scss';
 
 const Player = (props) => {
-  const { mode, played, error, loading, songUrl, songId, song, songList } = props;
+  const { mode, playState, error, loading, songUrl, songId, song, songList } = props;
   const element = useRef(null);
-  const player = useRef(null);
+  const audio = useRef(null);
   const disc = useRef(null);
 
   useEffect(() => {
@@ -25,10 +25,10 @@ const Player = (props) => {
   });
 
   function togglePlay() {
-    if (player) {
-      dump('toggle player');
-      disc.current.classList.toggle('wheel', !played);
-      played ? player.current.pause() : player.current.play();
+    if (audio) {
+      dump('toggle audio');
+      disc.current.classList.toggle('brake', playState);
+      playState ? audio.current.pause() : audio.current.play();
       props.togglePlayer();
     }
   }
@@ -54,6 +54,34 @@ const Player = (props) => {
     }
   }
 
+  function audioTimeUpdate() {
+    dump('on timeupdate');
+    // xxx
+    element.current.querySelector('.current-time').innerText = format(audio.current.currentTime);
+  }
+  
+  function audioCanPlay() {
+    dump('on canplay');
+    // xxx
+    element.current.querySelector('.total-time').innerText = format(audio.current.duration);
+  }
+
+  function format(t) {
+    dump('format t: ' + t);
+    let m = Math.floor(t / 60);
+    let s = Math.floor(t % 60);
+    if (m <= 9) {
+      m=`0${m}`;
+    }
+
+    if (s <= 9) {
+      s=`0${s}`;
+    }
+
+    return `${m}:${s}`;
+  }
+
+
   return (
     <div
       ref={element}
@@ -66,13 +94,23 @@ const Player = (props) => {
         <div className="player-info">
           <span className="song-name p-pri">{song.name}</span>
           <span className="song-art p-sec">{song.ar}</span>
-          <div ref={disc} className="song-disc" style={{backgroundImage: `url(${song.picUrl})`}}></div>
+          <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
         </div>
         <div className="player-controller">
           <span className="p-sec">{mode}</span>
-          <span className="p-sec">{ played ? 'play' : 'stop' }</span>
-          <audio ref={player} src={songUrl}></audio>
+          <span className="p-sec">{ playState ? 'play' : 'stop' }</span>
+          <div className="player-progress">
+            <span className="p-sec current-time"></span>
+            <progress value="0" max="100"></progress>
+            <span className="p-sec total-time"></span>
+          </div>
         </div>
+        <audio
+          ref={audio}
+          src={songUrl}
+          onTimeUpdate={audioTimeUpdate}
+          onCanPlay={audioCanPlay}>
+        </audio>
         </>
       }
     </div>
@@ -83,7 +121,7 @@ const Player = (props) => {
 const mapStateToProps = state => {
   return {
     mode: state.player.loopMode,
-    played: state.player.played,
+    playState: state.player.playState,
     songUrl: state.player.songUrl,
     songId: state.player.songId,
     song: state.player.song,
