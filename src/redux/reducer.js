@@ -1,11 +1,7 @@
 import {
-  TOGGLE_PLAYER,
   FETCH_SONGURL_SUCCESS,
-  CHANGE_PLAYER_MODE,
   FETCH_SONGURL_BEGIN,
   FETCH_SONGURL_FAILURE,
-  PLAY_NEXT_SONG,
-  PLAY_PREVIOUS_SONG,
   UPDATE_PLAYER,
   REQUEST_PLAYLIST,
   RECEIVE_PLAYLIST,
@@ -21,8 +17,6 @@ const initialState = {
   player: {
     loading: false, // padding state for fetch song url from server
     error: null, // error value when fetch song url from server failed
-    playState: false, // player state, play or not
-    loopMode: 'list', // current play mode
     songId: '', // current play song id
     song: null,
     songs: [], // compute next or previous song
@@ -43,15 +37,6 @@ const initialState = {
 export default function playerReducer(state = initialState, action) {
   switch (action.type) {
     // Player reducer
-    case TOGGLE_PLAYER: {
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          playState: !state.player.playState
-        }
-      };
-    }
     case FETCH_SONGURL_BEGIN:
       dump('FETCH_SONGURL_BEGIN');
       return {
@@ -83,24 +68,6 @@ export default function playerReducer(state = initialState, action) {
           songUrl: null,
           error: action.error
         }
-      };
-    case CHANGE_PLAYER_MODE: {
-      const { mode } = action.mode;
-      return {
-        ...state,
-        player: {
-          ...state.player,
-          loopMode: mode
-        }
-      };
-    }
-    case PLAY_NEXT_SONG:
-      return {
-        ...state
-      };
-    case PLAY_PREVIOUS_SONG:
-      return {
-        ...state
       };
     case UPDATE_PLAYER:
       return {

@@ -3,18 +3,23 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  background-color: var(--color-gs10);
 }
 
 .player-info {
-  height: calc(100% - 8rem);
+  height: calc(100% - 7rem);
   width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .song-art {
+    margin-bottom: 1rem;
+  }
+
   .song-disc {
     height: 16rem;
     width: 16rem;
@@ -27,8 +32,19 @@
 }
 
 .player-controller {
-  height: 8rem;
+  height: 7rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .player-progress {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 
 .wheel {

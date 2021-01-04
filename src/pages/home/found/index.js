@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchFoundList } from './actions';
-import { updatePlayerSongs } from '../../player/actions'
+import { updatePlayer } from '../../player/actions'
 import { List, ListItem } from 'kaid';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -24,7 +24,7 @@ const Found = (props) => {
     const { key, target } = e;
     if (key === 'Enter') {
       const id = target.dataset.id;
-      props.updatePlayerSongs(id, props.foundData);
+      props.updatePlayer(id, props.foundData);
       props.history.push('/player');
     }
   }
@@ -77,7 +77,7 @@ const mapStateToProps = state => {
 // Map Redux actions to component props
 const mapDispatchToProps = {
   fetchFoundList,
-  updatePlayerSongs
+  updatePlayer
 };
 
 export default compose(

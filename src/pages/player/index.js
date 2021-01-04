@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { togglePlayer, fetchSongUrl } from './actions';
+import { togglePlayer, fetchSongUrl, updatePlayer } from './actions';
 import { Spin } from 'kaid';
 
 import './index.scss';
 
 const Player = (props) => {
-  const { mode, playState, error, loading, songUrl, songId, song, songList } = props;
+  const { error, loading, songUrl, songId, song, songs } = props;
   const element = useRef(null);
   const audio = useRef(null);
   const disc = useRef(null);
@@ -14,9 +14,16 @@ const Player = (props) => {
   useEffect(() => {
     if (songId) {
       dump('Player fetch song url with id: ' + songId);
+      dump(`Player fetch song url when songList: ${JSON.stringify(songs)}`);
       props.fetchSongUrl(songId);
     }
   }, [props.songId]);
+
+  useEffect(() => {
+    // autoPlay={ture} not work
+    audio.current.play();
+    disc.current.classList.remove('brake');
+  }, [props.songUrl]);
 
   useEffect(() => {
     if (element) {
@@ -27,9 +34,9 @@ const Player = (props) => {
   function togglePlay() {
     if (audio) {
       dump('toggle audio');
-      disc.current.classList.toggle('brake', playState);
-      playState ? audio.current.pause() : audio.current.play();
-      props.togglePlayer();
+      disc.current.classList.toggle('brake', !audio.current.paused);
+      audio.current.paused ? audio.current.play() : audio.current.pause();
+      // props.togglePlayer();
     }
   }
 
@@ -46,25 +53,73 @@ const Player = (props) => {
         e.stopPropagation();
         break;
       case 'ArrowLeft':
-        // TODO: previous song, use props.songList implement
+        playNext(-1);
+        break;
       case 'ArrowRight':
-        // TODO: next song, use props.songList implement
+        playNext(1);
+        break;
       default:
         break;
     }
   }
 
-  function audioTimeUpdate() {
+  function playNext(towards) {
+    let nextIndex;
+    let songsNumber = songs.length;
+    let curIndex = songs.findIndex((v) => {
+      return v.id == props.songId;
+    });
+
+    if (curIndex == -1) {
+      return;
+    }
+
+    if (towards === 0) {
+      // replay
+    } else if (towards > 0) {
+      //TODO play mode code
+      // list as default
+      if (curIndex === songsNumber - 1) {
+        // play the first
+        nextIndex = 0;
+      } else {
+        nextIndex = curIndex + 1;
+      }
+    } else {
+      if (curIndex === 0) {
+        nextIndex = songsNumber - 1;
+      } else {
+        nextIndex = curIndex - 1;
+      }
+    }
+
+    dump(`Player index : ${curIndex} =>  ${nextIndex}`);
+
+    props.updatePlayer(
+      songs[nextIndex].id,
+      songs[nextIndex],
+      songs
+    );
+  }
+
+  function onTimeUpdate() {
     dump('on timeupdate');
-    // xxx
+    // xxx  not good here use react implement
     element.current.querySelector('.current-time').innerText = format(audio.current.currentTime);
   }
   
-  function audioCanPlay() {
+  function onCanPlay() {
     dump('on canplay');
-    // xxx
+    // xxx not good here use react implement
+    element.current.querySelector('.current-time').innerText = '00:00';
     element.current.querySelector('.total-time').innerText = format(audio.current.duration);
   }
+
+  function onEnded() {
+    dump('on ended');
+    playNext(1);
+  }
+
 
   function format(t) {
     dump('format t: ' + t);
@@ -97,19 +152,17 @@ const Player = (props) => {
           <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
         </div>
         <div className="player-controller">
-          <span className="p-sec">{mode}</span>
-          <span className="p-sec">{ playState ? 'play' : 'stop' }</span>
           <div className="player-progress">
             <span className="p-sec current-time"></span>
-            <progress value="0" max="100"></progress>
             <span className="p-sec total-time"></span>
           </div>
         </div>
         <audio
           ref={audio}
           src={songUrl}
-          onTimeUpdate={audioTimeUpdate}
-          onCanPlay={audioCanPlay}>
+          onTimeUpdate={onTimeUpdate}
+          onCanPlay={onCanPlay}
+          onEnded={onEnded}>
         </audio>
         </>
       }
@@ -120,8 +173,6 @@ const Player = (props) => {
 // Map Redux state to component props
 const mapStateToProps = state => {
   return {
-    mode: state.player.loopMode,
-    playState: state.player.playState,
     songUrl: state.player.songUrl,
     songId: state.player.songId,
     song: state.player.song,
@@ -133,7 +184,8 @@ const mapStateToProps = state => {
 // Map Redux actions to component props
 const mapDispatchToProps = {
   togglePlayer,
-  fetchSongUrl
+  fetchSongUrl,
+  updatePlayer
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
