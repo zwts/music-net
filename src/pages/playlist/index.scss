@@ -19,6 +19,9 @@
   background-repeat: no-repeat;
   color: var(--color-gs00);
   text-shadow: 2px 2px 3px var(--color-gs90);
+  .playlist-name {
+    margin: 0 0.5rem;
+  }
 }
 
 .playlist-list {

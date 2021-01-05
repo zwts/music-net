@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { togglePlayer, fetchSongUrl, updatePlayer } from './actions';
-import { Spin } from 'kaid';
+import { fetchSongUrl, updatePlayer } from './actions';
 
 import './index.scss';
 
 const Player = (props) => {
-  const { error, loading, songUrl, songId, song, songs } = props;
+  const { songUrl, songId, song, songs } = props;
   const element = useRef(null);
   const audio = useRef(null);
   const disc = useRef(null);
@@ -36,13 +35,12 @@ const Player = (props) => {
       dump('toggle audio');
       disc.current.classList.toggle('brake', !audio.current.paused);
       audio.current.paused ? audio.current.play() : audio.current.pause();
-      // props.togglePlayer();
     }
   }
 
   function handleKeyDown(e) {
     dump(`Player handle keydown`);
-    const { key, target } = e;
+    const { key } = e;
     switch (key) {
       case 'Enter':
         togglePlay();
@@ -58,6 +56,16 @@ const Player = (props) => {
       case 'ArrowRight':
         playNext(1);
         break;
+      case 'ArrowUp':
+        // All media application cannot tell which channel we request change?
+        // Current we default will judgment 'notification' channel, but we need
+        // 'content' channel. So can we change the API to:
+        // navigator.volumeManager.requestUp('content'); ?
+        navigator.volumeManager.requestUp();
+        break;
+      case 'ArrowDown':
+        navigator.volumeManager.requestDown();
+        break;
       default:
         break;
     }
@@ -70,7 +78,7 @@ const Player = (props) => {
       return v.id == props.songId;
     });
 
-    if (curIndex == -1) {
+    if (curIndex === -1) {
       return;
     }
 
@@ -143,29 +151,24 @@ const Player = (props) => {
       onKeyDown={handleKeyDown}
       className="player"
       tabIndex="-1">
-      {loading ?
-        <Spin /> :
-        <>
-        <div className="player-info">
-          <span className="song-name p-pri">{song.name}</span>
-          <span className="song-art p-sec">{song.ar}</span>
-          <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
+      <div className="player-info">
+        <span className="song-name p-pri">{song.name}</span>
+        <span className="song-art p-sec">{song.ar}</span>
+        <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
+      </div>
+      <div className="player-controller">
+        <div className="player-progress">
+          <span className="p-sec current-time"></span>
+          <span className="p-sec total-time"></span>
         </div>
-        <div className="player-controller">
-          <div className="player-progress">
-            <span className="p-sec current-time"></span>
-            <span className="p-sec total-time"></span>
-          </div>
-        </div>
-        <audio
-          ref={audio}
-          src={songUrl}
-          onTimeUpdate={onTimeUpdate}
-          onCanPlay={onCanPlay}
-          onEnded={onEnded}>
-        </audio>
-        </>
-      }
+      </div>
+      <audio
+        ref={audio}
+        src={songUrl}
+        onTimeUpdate={onTimeUpdate}
+        onCanPlay={onCanPlay}
+        onEnded={onEnded}>
+      </audio>
     </div>
   );
 };
@@ -183,7 +186,6 @@ const mapStateToProps = state => {
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
-  togglePlayer,
   fetchSongUrl,
   updatePlayer
 };
