@@ -31,7 +31,10 @@ const initialState = {
     loading: false,
     recommendData: []
   },
-  foundData: []
+  found: {
+    loading: false,
+    foundData: []
+  }
 };
 
 export default function playerReducer(state = initialState, action) {
@@ -133,17 +136,29 @@ export default function playerReducer(state = initialState, action) {
     //Found Reducer
     case FETCHING_FOUND_LIST:
       return {
-        ...state
+        ...state,
+        found: {
+          ...state.found,
+          loading: action.loading
+        }
       };
     case FETCH_FOUND_LIST_SUCCESS:
       dump(`found Reducer success: ${JSON.stringify(action.data)}`);
       return {
         ...state,
-        foundData: action.data
+        found: {
+          ...state.found,
+          loading: action.loading,
+          foundData: action.data
+        }
       };
     case FETCH_FOUND_LIST_FAILURE:
       return {
-        ...state
+        ...state,
+        found: {
+          ...state.found,
+          loading: action.loading
+        }
       };
     default:
       return state

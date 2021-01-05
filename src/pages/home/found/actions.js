@@ -7,16 +7,18 @@ import {
 
 export const fetchingFoundList = () => ({
   type: FETCHING_FOUND_LIST,
+  loading: true
 });
 
 export const fetchFoundListSuccess = data => ({
   type: FETCH_FOUND_LIST_SUCCESS,
+  loading: false,
   data: data
 });
 
 export const fetchFoundListFailure = error => ({
   type: FETCH_FOUND_LIST_FAILURE,
-  error
+  loading: false
 });
 
 export const fetchFoundList = (art, limit) => {

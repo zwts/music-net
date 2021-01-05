@@ -403,3 +403,17 @@ li:focus {
   background-color: var(--highlight-color);
   color: var(--color-gs00);
 }
+
+
+/* gaia-icon When can we use gaia-icon directly as system fonts, without import!*/
+/*[data-icon]:before {*/
+  /*font-family: "gaia-icons";*/
+  /*content: attr(data-icon);*/
+  /*display: inline-block;*/
+  /*font-weight: 500;*/
+  /*font-style: normal;*/
+  /*text-decoration: inherit;*/
+  /*text-transform: none;*/
+  /*text-rendering: optimizeLegibility;*/
+/*}*/
+

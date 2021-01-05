@@ -2,30 +2,59 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchFoundList } from './actions';
 import { updatePlayer } from '../../player/actions'
-import { List, ListItem } from 'kaid';
+import { List, ListItem, Spin } from 'kaid';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 
 import './index.scss';
 
 const Found = (props) => {
+  const SEARCH_RESULT_LIMIT = 5;
   const element = useRef(null);
   const list = useRef(null);
+  const input = useRef(null);
 
-  // default we show static search result;
-  // TODO: next we should add input area to search dynamic.
-  if (!props.foundData.length) {
-    dump('Found fetch dzq');
-    props.fetchFoundList('邓紫棋', 2);
+  function getSongFromFoundList(id) {
+    let matched;
+    props.foundData.forEach((song) => {
+      // id will be string number or number
+      if(song.id == id) {
+        matched = song;
+      }
+    });
+    return matched;
   }
 
+
   function handleKeyDown(e) {
-    dump('Found handle key down');
+    dump('Found handle key down' + input.current.value);
     const { key, target } = e;
-    if (key === 'Enter') {
-      const id = target.dataset.id;
-      props.updatePlayer(id, props.foundData);
-      props.history.push('/player');
+    switch (key) {
+      case 'Enter':
+        if (target.tagName === 'INPUT') {
+          // search
+          if (input.current.value) {
+            props.fetchFoundList(input.current.value, SEARCH_RESULT_LIMIT);
+          }
+        } else {
+          // play
+          if (props.foundData) {
+            props.updatePlayer(
+              target.dataset.id,
+              getSongFromFoundList(target.dataset.id),
+              props.foundData);
+            props.history.push('/player');
+          }
+        }
+        break;
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        if (target.tagName === 'INPUT' && input.current.value) {
+          e.stopPropagation();
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -54,15 +83,27 @@ const Found = (props) => {
 
   return (
     <div
-      className="list-view"
+      className="found-view"
       ref={element}
       onKeyDown={handleKeyDown}
       onFocus={handleFocus}
       tabIndex="-1">
+
       <List ref={list}>
-        {props.foundData && props.foundData.map(found => (
-          createListItem(found)
-        ))}
+        <li className="found-input-warpper">
+          <input
+            ref={input}
+            className="found-input focusable"
+            type="search"
+            placeholder="Search"
+          />
+        </li>
+        {props.loading ?
+          <Spin /> :
+          props.foundData && props.foundData.map(found => (
+            createListItem(found)
+          ))
+        }
       </List>
     </div>
   );
@@ -70,7 +111,8 @@ const Found = (props) => {
 
 const mapStateToProps = state => {
   return {
-    foundData: state.foundData,
+    foundData: state.found.foundData,
+    loading: state.found.loading
   };
 };
 
