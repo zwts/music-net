@@ -29,7 +29,8 @@
     "webpack-cli": "3.1.0"
   },
   "dependencies": {
-    "kaid": "/Users/tanshi/local/kaid",
+    "kaid": "git+ssh://git@git.kaiostech.com:fae/kaid.git",
+    "l10n": "git+ssh://git@git.kaiostech.com:fae/l10n.git",
     "axios": "^0.21.0",
     "preact": "^10.5.7",
     "react": "^17.0.1",

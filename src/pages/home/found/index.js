@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchFoundList } from './actions';
 import { updatePlayer } from '../../player/actions'
-import { List, ListItem, Spin } from 'kaid';
+import { List, ListItem, Spin, SoftKey } from 'kaid';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 
@@ -13,6 +13,19 @@ const Found = (props) => {
   const element = useRef(null);
   const list = useRef(null);
   const input = useRef(null);
+
+  useEffect(() => {
+    SoftKey.register({
+      left: '',
+      center: '',
+      right: 'search'
+    }, input.current);
+    SoftKey.register({
+      left: '',
+      center: 'play',
+      right: ''
+    }, list.current.container);
+  }, []);
 
   function getSongFromFoundList(id) {
     let matched;
@@ -31,12 +44,7 @@ const Found = (props) => {
     const { key, target } = e;
     switch (key) {
       case 'Enter':
-        if (target.tagName === 'INPUT') {
-          // search
-          if (input.current.value) {
-            props.fetchFoundList(input.current.value, SEARCH_RESULT_LIMIT);
-          }
-        } else {
+        if (target.tagName === 'LI') {
           // play
           if (props.foundData) {
             props.updatePlayer(
@@ -51,6 +59,14 @@ const Found = (props) => {
       case 'ArrowRight':
         if (target.tagName === 'INPUT' && input.current.value) {
           e.stopPropagation();
+        }
+        break;
+      case 'SoftRight':
+        if (target.tagName === 'INPUT') {
+          // search
+          if (input.current.value) {
+            props.fetchFoundList(input.current.value, SEARCH_RESULT_LIMIT);
+          }
         }
         break;
       default:
@@ -82,6 +98,7 @@ const Found = (props) => {
   }
 
   return (
+    <>
     <div
       className="found-view"
       ref={element}
@@ -106,6 +123,8 @@ const Found = (props) => {
         }
       </List>
     </div>
+    <SoftKey nonL10n/>
+    </>
   );
 };
 

@@ -4039,8 +4039,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"kaid@file:../../../kaid":
+"kaid@git+ssh://git@git.kaiostech.com:fae/kaid.git":
   version "0.0.1"
+  resolved "git+ssh://git@git.kaiostech.com:fae/kaid.git#b075aa5cad5c8de122e3d2b35cc47d1cf7f005b3"
   dependencies:
     react "16.8.0"
     react-dom "16.8.0"
@@ -4068,6 +4069,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
 kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
+
+"l10n@git+ssh://git@git.kaiostech.com:fae/l10n.git":
+  version "0.0.3"
+  resolved "git+ssh://git@git.kaiostech.com:fae/l10n.git#169ee2b55102ee37befa0a2ae721c2aa6f3ea6e9"
 
 lcid@^1.0.0:
   version "1.0.0"
