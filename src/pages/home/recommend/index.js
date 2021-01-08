@@ -2,7 +2,7 @@ import React, { useRef, useEffect }from 'react';
 import { fetchRecommendList } from './actions';
 import { updatePlaylistInfo } from '../../playlist/actions'
 import { fetchPlaylist } from '../../playlist/actions';
-import { List, ListItem, Spin } from 'kaid';
+import { List, ListItem, Spin, SoftKey } from 'kaid';
 import { connect } from "react-redux";
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -10,14 +10,21 @@ import { withRouter } from 'react-router';
 import "./index.scss";
 
 const Recommend = (props) => {
+  const RECOMMEND_PLAYLIST_LIMIT = 5;
   const element = useRef(null);
   const list = useRef(null);
 
   useEffect(() => {
     if (!props.recommendData.length) {
       dump('recommend fetch ');
-      props.fetchRecommendList(2);
+      props.fetchRecommendList(RECOMMEND_PLAYLIST_LIMIT);
     }
+
+    SoftKey.register({
+      left: '',
+      center: 'select',
+      right: 'refresh'
+    }, element.current);
   }, []);
 
   useEffect(() => {
@@ -31,7 +38,7 @@ const Recommend = (props) => {
 
   function onFocus() {
     dump('recommend onFocus.');
-    if (list.current) {
+    if (list.current.container) {
       list.current.container.focus();
     } else if (element) {
       element.current.focus();
@@ -42,10 +49,18 @@ const Recommend = (props) => {
     dump(`recommend handle keydown`);
     const { key, target } = e;
 
-    if (key === 'Enter') {
-      props.updatePlaylistInfo(getPlaylistInfo(target.dataset.id));
-      props.fetchPlaylist(target.dataset.id);
-      props.history.push('/playlist');
+    switch (key) {
+      case 'Enter':
+        props.updatePlaylistInfo(getPlaylistInfo(target.dataset.id));
+        props.fetchPlaylist(target.dataset.id);
+        props.history.push('/playlist');
+        break;
+      case 'SoftRight':
+        //xxx: +1 just to finger out refresh success.
+        props.fetchRecommendList(RECOMMEND_PLAYLIST_LIMIT + 1);
+        break;
+      default:
+        break;
     }
   }
 
@@ -74,21 +89,28 @@ const Recommend = (props) => {
   }
 
   return (
+    <>
     <div
       ref={element}
       onKeyDown={handleKeyDown}
       onFocus={onFocus}
-      className="list-view"
+      className="recommend"
       tabIndex="-1">
       {props.loading ?
-        <Spin/> :
+        <div className="spin-container">
+          <Spin/>
+        </div>
+        :
         <List ref={list}>
           {props.recommendData && props.recommendData.map(recommend => (
             createListItem(recommend)
           ))}
         </List>
       }
+
     </div>
+    <SoftKey />
+    </>
   );
 };
 

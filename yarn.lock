@@ -4041,7 +4041,7 @@ jsprim@^1.2.2:
 
 "kaid@git+ssh://git@git.kaiostech.com:fae/kaid.git":
   version "0.0.1"
-  resolved "git+ssh://git@git.kaiostech.com:fae/kaid.git#b075aa5cad5c8de122e3d2b35cc47d1cf7f005b3"
+  resolved "git+ssh://git@git.kaiostech.com:fae/kaid.git#66969a985981b19558c1a7cfafc23ef037bc9f6f"
   dependencies:
     react "16.8.0"
     react-dom "16.8.0"
