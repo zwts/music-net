@@ -1,7 +1,8 @@
 import React from 'react';
-import { Tab, TabPanel } from 'kaid'
-import Recommend from './recommend'
-import Found from './found'
+import { Tab, TabPanel } from 'kaid';
+import Recommend from './recommend';
+import Found from './found';
+import Me from './me';
 
 import './index.scss';
 
@@ -16,7 +17,7 @@ function Home() {
           <Found />
         </TabPanel>
         <TabPanel key="me" title="Me">
-          <div tabIndex="-1">me page</div>
+          <Me />
         </TabPanel>
       </Tab>
     </div>

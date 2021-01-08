@@ -100,7 +100,7 @@ const Found = (props) => {
   return (
     <>
     <div
-      className="found-view"
+      className="found"
       ref={element}
       onKeyDown={handleKeyDown}
       onFocus={handleFocus}
@@ -123,7 +123,7 @@ const Found = (props) => {
         }
       </List>
     </div>
-    <SoftKey nonL10n/>
+    <SoftKey />
     </>
   );
 };
