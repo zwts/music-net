@@ -14,6 +14,7 @@ import Player from './pages/player';
 import Playlist from './pages/playlist';
 
 import './app.scss';
+import '../gaia-icons-embedded.css';
 
 function App() {
  return (

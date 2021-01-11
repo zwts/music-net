@@ -19,6 +19,7 @@
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.1",
     "fatigue-scripts": "git+ssh://git@git.kaiostech.com:shared/fatigue-scripts.git",
+    "file-loader": "v1.1.6",
     "jest": "25.5.4",
     "mini-css-extract-plugin": "0.4.2",
     "node-sass": "4.9.3",

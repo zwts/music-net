@@ -42,9 +42,9 @@ const Me = (props) => {
       tabIndex="-1">
 
       <List ref={list}>
-        <ListItem primary='Recently played' focusable='true'/>
-        <ListItem primary='Favorite songs' focusable='true'/>
-        <ListItem primary='Favorite Playlist' focusable='true'/>
+        <ListItem primary="Recently played" focusable="true" controller="forward"/>
+        <ListItem primary="Favorite songs" focusable="true" controller="forward"/>
+        <ListItem primary="Favorite Playlist" focusable="true" controller="forward"/>
       </List>
     </div>
     <SoftKey />
