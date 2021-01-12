@@ -36,11 +36,13 @@ const Playlist = (props) => {
     switch (key) {
       case 'Enter':
         dump(`Playlist handle keydown`);
-        props.updatePlayer(
-          target.dataset.id,
-          getSongFromPlaylist(target.dataset.id),
-          props.playlistData);
-        props.history.push('/player');
+        if (target.tagName === 'LI') {
+          props.updatePlayer(
+            target.dataset.id,
+            getSongFromPlaylist(target.dataset.id),
+            props.playlistData);
+          props.history.push('/player');
+        }
         break;
       case 'Backspace':
         props.history.go(-1);

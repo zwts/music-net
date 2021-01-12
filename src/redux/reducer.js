@@ -10,7 +10,8 @@ import {
   RECEIVE_RECOMMEND_LIST,
   FETCHING_FOUND_LIST,
   FETCH_FOUND_LIST_SUCCESS,
-  FETCH_FOUND_LIST_FAILURE
+  FETCH_FOUND_LIST_FAILURE,
+  UPDATE_FAVORITE_SONG
 } from './actionTypes';
 
 const initialState = {
@@ -34,6 +35,10 @@ const initialState = {
   found: {
     loading: false,
     foundData: []
+  },
+  me: {
+    favoriteSongs: new Map(),
+    favoriteSongsSize: 0
   }
 };
 
@@ -160,6 +165,20 @@ export default function playerReducer(state = initialState, action) {
           loading: action.loading
         }
       };
+
+      // Me
+    case UPDATE_FAVORITE_SONG:
+      dump(`update fav song: ${JSON.stringify(action.favoriteSongs)}`);
+      dump(`update fav song size: ${action.favoriteSongs.size}`);
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          favoriteSongs: action.favoriteSongs,
+          favoriteSongsSize: action.favoriteSongs.size
+        }
+      };
+      break;
     default:
       return state
   }

@@ -1,14 +1,17 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchSongUrl, updatePlayer } from './actions';
+import { toggleFavoriteSong } from '../home/me/actions';
 
 import './index.scss';
 
 const Player = (props) => {
-  const { songUrl, songId, song, songs } = props;
+  const { songUrl, songId, song, songs, } = props;
   const element = useRef(null);
   const audio = useRef(null);
   const disc = useRef(null);
+
+  const [favorite, setFavorite] = useState(isFavorite(songId));
 
   useEffect(() => {
     if (songId) {
@@ -16,6 +19,8 @@ const Player = (props) => {
       dump(`Player fetch song url when songList: ${JSON.stringify(songs)}`);
       props.fetchSongUrl(songId);
     }
+
+    setFavorite(isFavorite(props.songId))
   }, [props.songId]);
 
   useEffect(() => {
@@ -36,6 +41,11 @@ const Player = (props) => {
       disc.current.classList.toggle('brake', !audio.current.paused);
       audio.current.paused ? audio.current.play() : audio.current.pause();
     }
+  }
+
+  function isFavorite(id) {
+    const idStr = id.toString();
+    return props.favoriteSongs.has(idStr);
   }
 
   function handleKeyDown(e) {
@@ -65,6 +75,12 @@ const Player = (props) => {
         break;
       case 'ArrowDown':
         navigator.volumeManager.requestDown();
+        break;
+      case 'SoftRight':
+        setFavorite(!favorite);
+        props.toggleFavoriteSong(song, props.favoriteSongs);
+        break;
+      case 'SoftLeft':
         break;
       default:
         break;
@@ -154,6 +170,10 @@ const Player = (props) => {
       <div className="player-info">
         <span className="song-name p-pri">{song.name}</span>
         <span className="song-art p-sec">{song.ar}</span>
+        <div className="player-options">
+          <span className="mode" data-icon='media-repeat'></span>
+          <span className="favorite" data-icon={favorite ? 'favorite-on' : 'favorite-off'}></span>
+        </div>
         <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
       </div>
       <div className="player-controller">
@@ -180,14 +200,17 @@ const mapStateToProps = state => {
     songId: state.player.songId,
     song: state.player.song,
     songs: state.player.songs,
-    error: state.player.error
+    error: state.player.error,
+    favoriteSongs: state.me.favoriteSongs,
+    favoriteSongsSize: state.me.favoriteSongsSize
   }
 };
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
   fetchSongUrl,
-  updatePlayer
+  updatePlayer,
+  toggleFavoriteSong
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

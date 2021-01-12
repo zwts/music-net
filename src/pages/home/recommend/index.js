@@ -51,9 +51,12 @@ const Recommend = (props) => {
 
     switch (key) {
       case 'Enter':
-        props.updatePlaylistInfo(getPlaylistInfo(target.dataset.id));
-        props.fetchPlaylist(target.dataset.id);
-        props.history.push('/playlist');
+        // press too fast when enter page will cause error situation
+        if (target.tagName === 'LI') {
+          props.updatePlaylistInfo(getPlaylistInfo(target.dataset.id));
+          props.fetchPlaylist(target.dataset.id);
+          props.history.push('/playlist');
+        }
         break;
       case 'SoftRight':
         //xxx: +1 just to finger out refresh success.

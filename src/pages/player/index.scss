@@ -5,17 +5,37 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  background-color: var(--color-gs10);
+  background-image: linear-gradient(to bottom, var(--color-gs70) , var(--color-gs90));;
+  color: var(--color-gs10);
 }
 
 .player-info {
-  height: calc(100% - 7rem);
+  height: calc(100% - 4rem);
   width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .player-options {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2.4rem;
+    .mode {
+      margin-left: 1rem;
+      font-size: 2.4rem;
+    }
+    .favorite{
+      margin-right: 1rem;
+      &[data-icon='favorite-on'] {
+        color: var(--highlight-color);
+      }
+    }
+  }
+
   .song-name {
     width: 90%;
     white-space: nowrap;
@@ -39,7 +59,7 @@
 }
 
 .player-controller {
-  height: 7rem;
+  height: 4rem;
   width: 100%;
   display: flex;
   flex-direction: column;
