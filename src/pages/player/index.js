@@ -33,7 +33,6 @@ const Player = (props) => {
   useEffect(() => {
     // autoPlay={ture} not work
     audio.current.play();
-    disc.current.classList.remove('brake');
   }, [props.songUrl]);
 
   useEffect(() => {
@@ -164,6 +163,7 @@ const Player = (props) => {
     // xxx not good here use react implement
     element.current.querySelector('.current-time').innerText = '00:00';
     element.current.querySelector('.total-time').innerText = format(audio.current.duration);
+    disc.current.classList.remove('brake');
   }
 
   function onEnded() {
