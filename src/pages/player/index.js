@@ -6,12 +6,19 @@ import { toggleFavoriteSong } from '../home/me/actions';
 import './index.scss';
 
 const Player = (props) => {
-  const { songUrl, songId, song, songs, } = props;
+  const { songUrl, songId, song, songs} = props;
   const element = useRef(null);
   const audio = useRef(null);
   const disc = useRef(null);
+  const MODES = ['list', 'single', 'random'];
+  const MODES_ICON_MAP = {
+    'list': 'media-repeat',
+    'single': 'media-repeat-once',
+    'random': 'media-shuffle'
+  };
 
   const [favorite, setFavorite] = useState(isFavorite(songId));
+  const [mode, setMode] = useState('list');
 
   useEffect(() => {
     if (songId) {
@@ -61,16 +68,12 @@ const Player = (props) => {
         e.stopPropagation();
         break;
       case 'ArrowLeft':
-        playNext(-1);
+        playNext(mode === 'random' ? 0 : -1);
         break;
       case 'ArrowRight':
-        playNext(1);
+        playNext(mode === 'random' ? 0 : 1);
         break;
       case 'ArrowUp':
-        // All media application cannot tell which channel we request change?
-        // Current we default will judgment 'notification' channel, but we need
-        // 'content' channel. So can we change the API to:
-        // navigator.volumeManager.requestUp('content'); ?
         navigator.volumeManager.requestUp();
         break;
       case 'ArrowDown':
@@ -81,10 +84,24 @@ const Player = (props) => {
         props.toggleFavoriteSong(song, props.favoriteSongs);
         break;
       case 'SoftLeft':
+        changeMode();
         break;
       default:
         break;
     }
+  }
+
+  function changeMode() {
+    let preModeIndex = MODES.findIndex((value) => {return value === mode});
+    let nextModeIndex;
+
+    if (preModeIndex < MODES.length - 1) {
+      nextModeIndex = preModeIndex + 1;
+    } else {
+      nextModeIndex = 0;
+    }
+
+    setMode(MODES[nextModeIndex]);
   }
 
   function playNext(towards) {
@@ -99,10 +116,19 @@ const Player = (props) => {
     }
 
     if (towards === 0) {
-      // replay
+      if (mode === 'single') {
+        // replay
+        audio.current.play();
+        return;
+      } else if (mode === 'random') {
+        function getRndInteger(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        nextIndex = getRndInteger(0, songsNumber - 1);
+      }
     } else if (towards > 0) {
-      //TODO play mode code
-      // list as default
+      // forward
       if (curIndex === songsNumber - 1) {
         // play the first
         nextIndex = 0;
@@ -110,6 +136,7 @@ const Player = (props) => {
         nextIndex = curIndex + 1;
       }
     } else {
+      // back
       if (curIndex === 0) {
         nextIndex = songsNumber - 1;
       } else {
@@ -141,7 +168,7 @@ const Player = (props) => {
 
   function onEnded() {
     dump('on ended');
-    playNext(1);
+    playNext(mode === 'list' ? 1 : 0);
   }
 
 
@@ -171,15 +198,15 @@ const Player = (props) => {
         <span className="song-name p-pri">{song.name}</span>
         <span className="song-art p-sec">{song.ar}</span>
         <div className="player-options">
-          <span className="mode" data-icon='media-repeat'></span>
-          <span className="favorite" data-icon={favorite ? 'favorite-on' : 'favorite-off'}></span>
+          <span className="mode" data-icon={MODES_ICON_MAP[mode]} />
+          <span className="favorite" data-icon={favorite ? 'favorite-on' : 'favorite-off'} />
         </div>
         <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
       </div>
       <div className="player-controller">
         <div className="player-progress">
-          <span className="p-sec current-time"></span>
-          <span className="p-sec total-time"></span>
+          <span className="p-sec current-time" />
+          <span className="p-sec total-time" />
         </div>
       </div>
       <audio
@@ -201,8 +228,8 @@ const mapStateToProps = state => {
     song: state.player.song,
     songs: state.player.songs,
     error: state.player.error,
-    favoriteSongs: state.me.favoriteSongs,
-    favoriteSongsSize: state.me.favoriteSongsSize
+    mode: state.player.mode,
+    favoriteSongs: state.me.favoriteSongs
   }
 };
 
