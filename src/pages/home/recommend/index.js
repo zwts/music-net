@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 
-import "./index.scss";
+import './index.scss';
 
 const Recommend = (props) => {
   const RECOMMEND_PLAYLIST_LIMIT = 5;
