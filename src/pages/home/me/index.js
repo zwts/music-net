@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { List, ListItem, SoftKey } from 'kaid';
 import { compose } from 'redux';
@@ -10,7 +10,11 @@ const Me = (props) => {
   const { favoriteSongs } = props;
   const element = useRef(null);
   const list = useRef(null);
+  const favSongForward = useRef(null);
   let favoriteSongsArr = [...favoriteSongs.values()];
+
+  const [favSongShown, setFavSongShown] = useState(false);
+
 
   useEffect(() => {
     SoftKey.register({
@@ -20,8 +24,23 @@ const Me = (props) => {
     }, list.current.container);
   }, []);
 
+  function toggleFavSong() {
+
+  }
+
   function handleKeyDown(e) {
     dump('Me handle key down');
+    let target = e.target;
+    let key = e.key;
+    switch (key) {
+      case 'Enter':
+        if (target.classList.contains('fav-songs')) {
+          setFavSongShown(!favSongShown);
+        }
+        break;
+      default:
+        break;
+    }
   }
 
 
@@ -34,7 +53,7 @@ const Me = (props) => {
     }
   }
 
-  function createListItem(item) {
+  function createSongItem(item) {
     const { picUrl, name, id, ar } = item;
     const options = {};
     picUrl && (options.icon = picUrl);
@@ -59,10 +78,17 @@ const Me = (props) => {
 
       <List ref={list}>
         <ListItem primary="Recently played" focusable="true" controller="forward"/>
-        <ListItem primary="Favorite songs" focusable="true" controller="forward"/>
-        {favoriteSongsArr && favoriteSongsArr.map(song => (
-          createListItem(song)
-        ))}
+        <ListItem
+          ref={favSongForward}
+          primary="Favorite songs"
+          focusable="true"
+          outerClass="fav-songs"
+          controller={favSongShown ? "back" : "forward"}/>
+        {favSongShown ?
+          favoriteSongsArr && favoriteSongsArr.map(song => (
+            createSongItem(song))
+          ) : null
+        }
         <ListItem primary="Favorite Playlist" focusable="true" controller="forward"/>
       </List>
     </div>

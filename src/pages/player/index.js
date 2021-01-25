@@ -155,7 +155,9 @@ const Player = (props) => {
   function onTimeUpdate() {
     dump('on timeupdate');
     // xxx  not good here use react implement
-    element.current.querySelector('.current-time').innerText = format(audio.current.currentTime);
+    if (element.current) {
+      element.current.querySelector('.current-time').innerText = format(audio.current.currentTime);
+    }
   }
   
   function onCanPlay() {
