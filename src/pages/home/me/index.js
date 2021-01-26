@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { List, ListItem, SoftKey } from 'kaid';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
+import { updatePlayer } from '../../player/actions';
 
 import './index.scss';
 
@@ -10,7 +11,6 @@ const Me = (props) => {
   const { favoriteSongs } = props;
   const element = useRef(null);
   const list = useRef(null);
-  const favSongForward = useRef(null);
   let favoriteSongsArr = [...favoriteSongs.values()];
 
   const [favSongShown, setFavSongShown] = useState(false);
@@ -24,8 +24,16 @@ const Me = (props) => {
     }, list.current.container);
   }, []);
 
-  function toggleFavSong() {
-
+  function getSongFromList(id, songsArr) {
+    let matched;
+    songsArr.forEach((song) => {
+      //TODO: CLEAN UP ALL GET SONG FUNCTION
+      // id will be string number or number
+      if(song.id == id) {
+        matched = song;
+      }
+    });
+    return matched;
   }
 
   function handleKeyDown(e) {
@@ -36,6 +44,12 @@ const Me = (props) => {
       case 'Enter':
         if (target.classList.contains('fav-songs')) {
           setFavSongShown(!favSongShown);
+        } else if (target.classList.contains('fav-song')) {
+          props.updatePlayer(
+            target.dataset.id,
+            getSongFromList(target.dataset.id, favoriteSongsArr),
+            favoriteSongsArr);
+          props.history.push('/player');
         }
         break;
       default:
@@ -61,6 +75,7 @@ const Me = (props) => {
     options.secondary = ar;
     options.focusable = 'true';
     options.data = { 'data-id': id };
+    options.outerClass = 'fav-song';
 
     return (
       <ListItem {...options}/>
@@ -79,7 +94,6 @@ const Me = (props) => {
       <List ref={list}>
         <ListItem primary="Recently played" focusable="true" controller="forward"/>
         <ListItem
-          ref={favSongForward}
           primary="Favorite songs"
           focusable="true"
           outerClass="fav-songs"
@@ -105,6 +119,7 @@ const mapStateToProps = state => {
 
 // Map Redux actions to component props
 const mapDispatchToProps = {
+  updatePlayer
 };
 
 export default compose(
