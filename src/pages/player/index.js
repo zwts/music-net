@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchSongUrl, updatePlayer } from './actions';
-import { toggleFavoriteSong } from '../home/me/actions';
+import { toggleFavoriteSong, addRecentlySong } from '../home/me/actions';
 
 import './index.scss';
 
@@ -166,6 +166,8 @@ const Player = (props) => {
     element.current.querySelector('.current-time').innerText = '00:00';
     element.current.querySelector('.total-time').innerText = format(audio.current.duration);
     disc.current.classList.remove('brake');
+
+    props.addRecentlySong(song);
   }
 
   function onEnded() {
@@ -239,7 +241,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   fetchSongUrl,
   updatePlayer,
-  toggleFavoriteSong
+  toggleFavoriteSong,
+  addRecentlySong
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

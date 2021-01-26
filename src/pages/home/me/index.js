@@ -8,12 +8,14 @@ import { updatePlayer } from '../../player/actions';
 import './index.scss';
 
 const Me = (props) => {
-  const { favoriteSongs } = props;
+  const { favoriteSongs, recentlySongs } = props;
   const element = useRef(null);
   const list = useRef(null);
-  let favoriteSongsArr = [...favoriteSongs.values()];
+  const favoriteSongsArr = [...favoriteSongs.values()];
 
+  // TODO maybe put special list item as unique component better?
   const [favSongShown, setFavSongShown] = useState(false);
+  const [recSongShown, setRecSongShown] = useState(false);
 
 
   useEffect(() => {
@@ -42,13 +44,22 @@ const Me = (props) => {
     let key = e.key;
     switch (key) {
       case 'Enter':
+        // TODO: use onClick callback for every type item?
         if (target.classList.contains('fav-songs')) {
           setFavSongShown(!favSongShown);
+        } else if (target.classList.contains('rec-songs')){
+          setRecSongShown(!recSongShown);
         } else if (target.classList.contains('fav-song')) {
           props.updatePlayer(
             target.dataset.id,
             getSongFromList(target.dataset.id, favoriteSongsArr),
             favoriteSongsArr);
+          props.history.push('/player');
+        } else if (target.classList.contains('rec-song')) {
+          props.updatePlayer(
+            target.dataset.id,
+            getSongFromList(target.dataset.id, recentlySongs),
+            recentlySongs);
           props.history.push('/player');
         }
         break;
@@ -67,7 +78,7 @@ const Me = (props) => {
     }
   }
 
-  function createSongItem(item) {
+  function createSongItem(item, outerClassName) {
     const { picUrl, name, id, ar } = item;
     const options = {};
     picUrl && (options.icon = picUrl);
@@ -75,7 +86,7 @@ const Me = (props) => {
     options.secondary = ar;
     options.focusable = 'true';
     options.data = { 'data-id': id };
-    options.outerClass = 'fav-song';
+    options.outerClass = outerClassName;
 
     return (
       <ListItem {...options}/>
@@ -92,7 +103,16 @@ const Me = (props) => {
       tabIndex="-1">
 
       <List ref={list}>
-        <ListItem primary="Recently played" focusable="true" controller="forward"/>
+        <ListItem
+          primary="Recently played"
+          focusable="true"
+          outerClass="rec-songs"
+          controller={recSongShown ? "back" : "forward"}/>
+        {recSongShown ?
+          recentlySongs && recentlySongs.map(song => (
+            createSongItem(song, 'rec-song'))
+          ) : null
+        }
         <ListItem
           primary="Favorite songs"
           focusable="true"
@@ -100,7 +120,7 @@ const Me = (props) => {
           controller={favSongShown ? "back" : "forward"}/>
         {favSongShown ?
           favoriteSongsArr && favoriteSongsArr.map(song => (
-            createSongItem(song))
+            createSongItem(song, 'fav-song'))
           ) : null
         }
         <ListItem primary="Favorite Playlist" focusable="true" controller="forward"/>
@@ -113,7 +133,8 @@ const Me = (props) => {
 
 const mapStateToProps = state => {
   return {
-    favoriteSongs: state.me.favoriteSongs
+    favoriteSongs: state.me.favoriteSongs,
+    recentlySongs: state.me.recentlySongs
   };
 };
 

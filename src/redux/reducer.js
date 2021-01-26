@@ -11,7 +11,8 @@ import {
   FETCHING_FOUND_LIST,
   FETCH_FOUND_LIST_SUCCESS,
   FETCH_FOUND_LIST_FAILURE,
-  UPDATE_FAVORITE_SONG
+  UPDATE_FAVORITE_SONGS,
+  UPDATE_RECENTLY_SONGS
 } from './actionTypes';
 
 const initialState = {
@@ -38,7 +39,8 @@ const initialState = {
   },
   me: {
     favoriteSongs: new Map(),
-    favoriteSongsSize: 0
+    favoriteSongsSize: 0,
+    recentlySongs: [],
   }
 };
 
@@ -167,7 +169,7 @@ export default function playerReducer(state = initialState, action) {
       };
 
       // Me
-    case UPDATE_FAVORITE_SONG:
+    case UPDATE_FAVORITE_SONGS:
       dump(`update fav song: ${JSON.stringify(action.favoriteSongs)}`);
       dump(`update fav song size: ${action.favoriteSongs.size}`);
       return {
@@ -179,6 +181,14 @@ export default function playerReducer(state = initialState, action) {
         }
       };
       break;
+    case UPDATE_RECENTLY_SONGS:
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          recentlySongs: action.recentlySongs
+        }
+      };
     default:
       return state
   }
