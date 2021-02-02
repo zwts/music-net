@@ -205,7 +205,7 @@ const Player = (props) => {
           <span className="mode" data-icon={MODES_ICON_MAP[mode]} />
           <span className="favorite" data-icon={favorite ? 'favorite-on' : 'favorite-off'} />
         </div>
-        <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl})`}}></div>
+        <div ref={disc} className="song-disc wheel brake" style={{backgroundImage: `url(${song.picUrl + '?param=200y200'})`}}></div>
       </div>
       <div className="player-controller">
         <div className="player-progress">

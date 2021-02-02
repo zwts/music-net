@@ -86,7 +86,7 @@ const Found = (props) => {
   function createListItem(found) {
     const { picUrl, name, ar, id } = found;
     const options = {};
-    picUrl && (options.icon = picUrl);
+    picUrl && (options.icon = picUrl +'?param=100y100');
     options.primary = name;
     options.secondary = ar;
     options.focusable = 'true';

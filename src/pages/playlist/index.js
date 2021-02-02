@@ -57,7 +57,7 @@ const Playlist = (props) => {
   function createListItem(item) {
     const { picUrl, name, id, ar} = item;
     const options = {};
-    picUrl && (options.icon = picUrl);
+    picUrl && (options.icon = picUrl +'?param=100y100');
     options.primary = name;
     options.secondary = ar;
     options.focusable = 'true';
@@ -74,7 +74,7 @@ const Playlist = (props) => {
       onKeyDown={handleKeyDown}
       className="playlist-view"
       tabIndex="-1">
-      <div className="playlist-info" style={{backgroundImage: `url(${props.info.picUrl})`}}>
+      <div className="playlist-info" style={{backgroundImage: `url(${props.info.picUrl + '?param=200y200'})`}}>
         <span className="playlist-name p-pri">{props.info.name}</span>
         <span className="playlist-count p-sec">{props.info.playCount}</span>
       </div>

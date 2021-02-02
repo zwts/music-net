@@ -81,7 +81,7 @@ const Me = (props) => {
   function createSongItem(item, outerClassName) {
     const { picUrl, name, id, ar } = item;
     const options = {};
-    picUrl && (options.icon = picUrl);
+    picUrl && (options.icon = picUrl +'?param=100y100');
     options.primary = name;
     options.secondary = ar;
     options.focusable = 'true';

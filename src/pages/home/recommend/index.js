@@ -80,7 +80,7 @@ const Recommend = (props) => {
   function createListItem(itemsData) {
     const { picUrl, name, playCount, id } = itemsData;
     const options = {};
-    picUrl && (options.icon = picUrl);
+    picUrl && (options.icon = picUrl +'?param=100y100');
     options.primary = name;
     options.secondary = playCount;
     options.focusable = 'true';
